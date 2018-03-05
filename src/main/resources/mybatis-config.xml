@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+
+
+	<!--<settings>-->
+		<!--<setting name="cacheEnabled" value="true"/>-->
+		<!--<setting name="lazyLoadingEnabled" value="true"/>-->
+		<!--<setting name="multipleResultSetsEnabled" value="true"/>-->
+		<!--<setting name="useColumnLabel" value="true"/>-->
+		<!--<setting name="useGeneratedKeys" value="false"/>-->
+		<!--<setting name="autoMappingBehavior" value="PARTIAL"/>-->
+		<!--<setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>-->
+		<!--<setting name="defaultExecutorType" value="SIMPLE"/>-->
+		<!--<setting name="defaultStatementTimeout" value="25"/>-->
+		<!--<setting name="defaultFetchSize" value="100"/>-->
+		<!--<setting name="safeRowBoundsEnabled" value="false"/>-->
+		<!--<setting name="mapUnderscoreToCamelCase" value="false"/>-->
+		<!--<setting name="localCacheScope" value="SESSION"/>-->
+		<!--<setting name="jdbcTypeForNull" value="OTHER"/>-->
+		<!--<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>-->
+	<!--</settings>-->
+
+	<!--
+        每一个在包 com.khh.web.domain 中的 Java Bean，在没有注解的情况下，会使用 Bean 的首字母小写的非限定类名来作为它的别名
+        若有注解，则别名为其注解值,在Java Bean类上加一个注解@Alias("name")
+    -->
+	<!--<typeAliases>-->
+		<!--<package name="com.khh.web.domain"/>-->
+	<!--</typeAliases>-->
+	
+	<!-- 会扫描包下的处理器 -->
+	<!--<typeHandlers>-->
+		<!--<package name="com.khh.web.typehandlers"/>-->
+		<!--<typeHandler handler="com.khh.web.typehandlers.MyDateStampTypeHandler"/>-->
+	<!--</typeHandlers>-->
+
+
+</configuration>
