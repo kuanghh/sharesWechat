@@ -7,4 +7,7 @@ import com.khh.wechat.service.WeChatService;
  * 微信公众号核心处理类
  */
 public class WeChatServiceImpl implements WeChatService {
+    public String processReq() throws Exception {
+        return null;
+    }
 }

@@ -15,8 +15,9 @@ public class BaseController {
     @ExceptionHandler
     public String exception(Exception e) {
 
-        //对异常进行判断做相应的处理
+        e.printStackTrace();
 
+        //对异常进行判断做相应的处理
         return "forward:/error.jsp";
     }
 }

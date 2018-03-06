@@ -65,7 +65,9 @@
     <spring-data-redis.version>1.8.3.RELEASE</spring-data-redis.version>
     <protostuff-core.version>1.0.10</protostuff-core.version>
 
-
+    <httpClient.version>4.5.2</httpClient.version>
+    <xstream.version>1.4.10</xstream.version>
+    <dom4j.version>1.6.1</dom4j.version>
 
   </properties>
 
@@ -243,11 +245,11 @@
 
 
 
-    <dependency>
-      <groupId>net.sf.json-lib</groupId>
-      <artifactId>json-lib</artifactId>
-      <version>${json-lib.version}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>net.sf.json-lib</groupId>-->
+      <!--<artifactId>json-lib</artifactId>-->
+      <!--<version>${json-lib.version}</version>-->
+    <!--</dependency>-->
 
     <dependency>
       <groupId>net.sf.ezmorph</groupId>
@@ -329,6 +331,27 @@
       <groupId>com.dyuproject.protostuff</groupId>
       <artifactId>protostuff-runtime</artifactId>
       <version>${protostuff-core.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>${dom4j.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>${xstream.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpClient.version}</version>
     </dependency>
 
 
