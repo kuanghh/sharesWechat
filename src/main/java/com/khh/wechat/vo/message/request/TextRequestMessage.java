@@ -4,7 +4,7 @@ package com.khh.wechat.vo.message.request;
  * 文本消息
  */
 
-public class TextMessage extends BaseMessage {
+public class TextRequestMessage extends BaseRequestMessage {
 	//消息内容
 	private String content;
 

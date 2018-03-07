@@ -1,7 +1,10 @@
 package com.khh.wechat.util;
 
 
+import com.khh.wechat.vo.message.request.*;
 import com.khh.wechat.vo.message.response.*;
+import com.khh.wechat.vo.message.response.TextMessage;
+import com.khh.wechat.vo.message.response.VoiceMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -13,6 +16,7 @@ import org.dom4j.io.SAXReader;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
@@ -183,6 +187,35 @@ public class MessageUtil {
 
 		return map;
 	}
+
+	public static BaseRequestMessage parseRequest(HttpServletRequest request) throws Exception {
+		Map<String, Object> map = parseXml2(request);
+
+		// 公众账号
+		String toUserName = (String) map.get("ToUserName");
+		// 发送方账号(open_id)
+		String fromUserName = (String) map.get("FromUserName");
+		// 消息类型
+		String msgType = (String) map.get("MsgType");
+
+		// 获取消息id(当发送的是消息类型的时候才存在msgId，事件类型没有msgId)
+		String msgId = (String) map.get("MsgId");
+
+		String createTime = (String)map.get("CreateTime");
+
+
+		BaseRequestMessage message = new BaseRequestMessage();
+		message.setToUserName(toUserName);
+		message.setFromUserName(fromUserName);
+		message.setMsgType(msgType);
+		message.setMsgId(msgId);
+		message.setCreateTime(createTime);
+
+		message.setParamMap(map);
+
+		return message;
+	}
+
 	/**
 	 * 解析微信发来的请求（XML）
 	 * 

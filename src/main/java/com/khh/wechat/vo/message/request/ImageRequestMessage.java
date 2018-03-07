@@ -5,7 +5,7 @@ package com.khh.wechat.vo.message.request;
  * 图片信息
  */
 
-public class ImageMessage extends BaseMessage {
+public class ImageRequestMessage extends BaseRequestMessage {
 	//图片链接
 	private String picUrl;
 

@@ -1,6 +1,9 @@
 package com.khh.wechat.vo.message.response;
 
 
+import com.khh.wechat.util.MessageUtil;
+import com.khh.wechat.vo.message.request.BaseRequestMessage;
+
 import java.util.List;
 
 /*
@@ -13,6 +16,15 @@ public class NewsMessage extends BaseMessage {
 	private int ArticleCount;
 	//多条图文消息信息,默认第一个item为大图
 	private List<Article> Articles;
+
+	public NewsMessage(){}
+
+
+	public NewsMessage(BaseRequestMessage message) {
+		super(message);
+		this.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+	}
+
 	/**
 	 * @return the articleCount
 	 */

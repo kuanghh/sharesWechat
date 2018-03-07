@@ -6,7 +6,7 @@ package com.khh.wechat.vo.message.request;
  * 地理信息
  */
 
-public class LocationMessage extends BaseMessage {
+public class LocationRequestMessage extends BaseRequestMessage {
 	// 地理位置维度
 	private String Location_X;
 	// 地理位置经度

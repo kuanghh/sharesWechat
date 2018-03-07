@@ -1,7 +1,7 @@
 package com.khh.wechat.vo.message.request;
 
 
-public class VoiceMessage extends BaseMessage{
+public class VoiceRequestMessage extends BaseRequestMessage {
 	private String MediaId;
 	private String Format;
 	/**

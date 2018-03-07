@@ -4,7 +4,7 @@ package com.khh.wechat.vo.message.request;
  * 链接信息
  */
 
-public class LinkMessage extends BaseMessage{
+public class LinkRequestMessage extends BaseRequestMessage {
 	//消息标题
 	private String Title;
 	//消息描述
