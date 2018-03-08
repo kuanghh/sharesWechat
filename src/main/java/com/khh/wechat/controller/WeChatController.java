@@ -37,7 +37,7 @@ public class WeChatController extends BaseController{
         return null;
     }
 
-    @RequestMapping(value = "/wechat", method = RequestMethod.POST)
+    @RequestMapping(value = "/wechat", method = RequestMethod.POST, produces = "text/html;charset=utf-8")//只有配置了produces = "text/html;charset=utf-8"，才不会在公众号里面显示中文的乱码
     @ResponseBody
     public String doPost(HttpServletRequest request) throws Exception {
 
