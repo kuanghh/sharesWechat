@@ -331,6 +331,31 @@ public class MessageUtil {
 		xstream.alias("xml", videoMessage.getClass());		
 		return xstream.toXML(videoMessage);
 	}
+
+	/**
+	 * 基础信息转换为xml
+	 * @param message
+	 * @return
+	 */
+	public static String baseMessageToXml(BaseMessage message){
+		String result = null;
+		if(message instanceof TextMessage){
+			result = textMessageToXml((TextMessage)message);
+		}else if(message instanceof MusicMessage){
+			result  = musicMessageToXml((MusicMessage)message);
+		}else if(message instanceof NewsMessage) {
+			result = newsMessageToXml((NewsMessage) message);
+		}else if(message instanceof ImagMessage) {
+			result = imagMessageToXml((ImagMessage) message);
+		}else if(message instanceof VoiceMessage) {
+			result = voiceMessageToXml((VoiceMessage) message);
+		}else if(message instanceof VideoMessage) {
+			result = videoMessageToXml((VideoMessage) message);
+		}
+
+		return result;
+	}
+
 	
 	
 	

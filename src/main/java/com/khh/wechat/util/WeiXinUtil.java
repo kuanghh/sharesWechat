@@ -57,9 +57,11 @@ public class WeiXinUtil {
 				String requestURL = CREATE_MENU_URL.replace("ACCESS_TOKEN", accessToken.getToken());
 				String jsonMenu = getMenuJsonStr();
 				JSONObject jsonObject = sendHttpsRequest(requestURL, HttpPost.METHOD_NAME, jsonMenu);
-				if (jsonObject == null || jsonObject.getInteger("errcode") != ErrorCode.SUCCESS) {
+				if (jsonObject == null || !jsonObject.getInteger("errcode").equals(ErrorCode.SUCCESS)) {
 					log.error("创建菜单失败");
-				}
+				}else{
+                    log.debug("创建菜单成功");
+                }
 
 			} else {
 				log.error("获取token失败");
@@ -170,41 +172,50 @@ public class WeiXinUtil {
 		return s;
 	}
 
+	public static String button_a1_key = "a1";
+	public static String button_a2_key = "a2";
+	public static String button_a3_1_key = "a3_1";
+	public static String button_a3_2_key = "a3_2";
+
 	private static String getMenuJsonStr() {
 
 		Menu menu = new Menu();
 
-		ComplexButton a1 = new ComplexButton();
-		a1.setName("复杂按钮");
-
-		CommonButton a11 = new CommonButton();
-		a11.setName("a11");
-		a11.setType(Button.BUTTON_TYPE_CLICK);
-		a11.setKey("a11_key");
-
-		CommonButton a12 = new CommonButton();
-		a12.setName("a12");
-		a12.setType(Button.BUTTON_TYPE_VIEW);
-		a12.setUrl("http://www.baidu.com");
+		CommonButton a1 = new CommonButton();
+		a1.setName("今日行情");
+		a1.setType(Button.BUTTON_TYPE_CLICK);
+		a1.setKey(button_a1_key);
 
 		CommonButton a2 = new CommonButton();
-		a2.setName("a2");
+		a2.setName("昨日数据");
 		a2.setType(Button.BUTTON_TYPE_CLICK);
-		a2.setKey("a2_key");
+		a2.setKey(button_a2_key);
 
+		ComplexButton a3 = new ComplexButton();
+        a3.setName("我");
 
-		List<Button> a1_buttons = new ArrayList<Button>();
-		a1_buttons.add(a11);
-		a1_buttons.add(a12);
+        CommonButton a3_1 = new CommonButton();
+        a3_1.setName("绑定注册");
+        a3_1.setType(Button.BUTTON_TYPE_CLICK);
+        a3_1.setKey(button_a3_1_key);
 
-		a1.setSub_button(a1_buttons);
+        CommonButton a3_2 = new CommonButton();
+        a3_2.setName("我的信息");
+        a3_2.setType(Button.BUTTON_TYPE_CLICK);
+        a3_2.setKey(button_a3_2_key);
 
-		List<Button> menu_buttons = new ArrayList<Button>();
-		menu_buttons.add(a1);
-		menu_buttons.add(a2);
+        List<Button> a3List = new ArrayList<>();
+        a3List.add(a3_1);
+        a3List.add(a3_2);
 
-		menu.setButton(menu_buttons);
+        a3.setSub_button(a3List);
 
+        List<Button> menu_list = new ArrayList<>();
+        menu_list.add(a1);
+        menu_list.add(a2);
+        menu_list.add(a3);
+
+        menu.setButton(menu_list);
 
 		return JSONObject.toJSONString(menu);
 	}

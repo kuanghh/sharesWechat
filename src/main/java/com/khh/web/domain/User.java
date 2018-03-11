@@ -1,8 +1,9 @@
 package com.khh.web.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable{
     private String id;
 
     private String openId;
@@ -15,9 +16,9 @@ public class User {
 
     private String account;
 
-    private Byte isBinding;
+    private Integer isBinding;
 
-    private Byte status;
+    private Integer status;
 
     private Date createTime;
 
@@ -73,22 +74,6 @@ public class User {
         this.account = account == null ? null : account.trim();
     }
 
-    public Byte getIsBinding() {
-        return isBinding;
-    }
-
-    public void setIsBinding(Byte isBinding) {
-        this.isBinding = isBinding;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -111,5 +96,21 @@ public class User {
 
     public void setUnregisterTime(Date unregisterTime) {
         this.unregisterTime = unregisterTime;
+    }
+
+    public Integer getIsBinding() {
+        return isBinding;
+    }
+
+    public void setIsBinding(Integer isBinding) {
+        this.isBinding = isBinding;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

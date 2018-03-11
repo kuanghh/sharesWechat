@@ -10,4 +10,11 @@ public class Const {
      * 正在登录的用户
      */
     public static String LOGIN_USER = "login_user";
+
+    /**
+     * 内网穿透路径
+     */
+    public static String project_loc_localhost = "http://53ba64c6.ngrok.io/sharesWechat";
+
+
 }

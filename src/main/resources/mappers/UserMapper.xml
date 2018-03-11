@@ -10,9 +10,9 @@
     <result column="account" property="account" jdbcType="VARCHAR" />
     <result column="is_binding" property="isBinding" jdbcType="TINYINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
-    <result column="unregister_time" property="unregisterTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime"  />
+    <result column="register_time" property="registerTime"  />
+    <result column="unregister_time" property="unregisterTime"  />
   </resultMap>
   <sql id="Base_Column_List" >
     id, open_id, name, phone, email, account, is_binding, status, create_time, register_time, 
@@ -35,8 +35,8 @@
       register_time, unregister_time)
     values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
-      #{isBinding,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{registerTime,jdbcType=TIMESTAMP}, #{unregisterTime,jdbcType=TIMESTAMP})
+      #{isBinding,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createTime},
+      #{registerTime}, #{unregisterTime})
   </insert>
   <insert id="insertSelective" parameterType="com.khh.web.domain.User" >
     insert into tb_user
@@ -101,13 +101,13 @@
         #{status,jdbcType=TINYINT},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime},
       </if>
       <if test="registerTime != null" >
-        #{registerTime,jdbcType=TIMESTAMP},
+        #{registerTime},
       </if>
       <if test="unregisterTime != null" >
-        #{unregisterTime,jdbcType=TIMESTAMP},
+        #{unregisterTime},
       </if>
     </trim>
   </insert>
@@ -136,13 +136,13 @@
         status = #{status,jdbcType=TINYINT},
       </if>
       <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime},
       </if>
       <if test="registerTime != null" >
-        register_time = #{registerTime,jdbcType=TIMESTAMP},
+        register_time = #{registerTime},
       </if>
       <if test="unregisterTime != null" >
-        unregister_time = #{unregisterTime,jdbcType=TIMESTAMP},
+        unregister_time = #{unregisterTime},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -156,9 +156,14 @@
       account = #{account,jdbcType=VARCHAR},
       is_binding = #{isBinding,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      register_time = #{registerTime,jdbcType=TIMESTAMP},
-      unregister_time = #{unregisterTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime},
+      register_time = #{registerTime},
+      unregister_time = #{unregisterTime}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+
+  <select id="findByOpenId" resultMap="BaseResultMap">
+    select * from tb_user where open_id = #{openId}
+  </select>
 </mapper>

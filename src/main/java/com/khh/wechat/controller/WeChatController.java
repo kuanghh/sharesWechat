@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by 951087952@qq.com on 2018/3/5.
@@ -43,8 +42,8 @@ public class WeChatController extends BaseController{
 
         BaseRequestMessage baseRequestMessage = MessageUtil.parseRequest(request);
 
-        String sendMessage = wechatService.processReq(baseRequestMessage);
 
-        return sendMessage;
+        return wechatService.processReq(baseRequestMessage);
+
     }
 }
