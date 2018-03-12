@@ -27,7 +27,6 @@ public class WeChatController extends BaseController{
     @RequestMapping(value = "/wechat", method = RequestMethod.GET)
     @ResponseBody
     public String doGet(String signature, String timestamp, String nonce, String echostr) throws Exception {
-        System.out.println("进来了");
 
         if (WeiXinUtil.checkSignature(signature, timestamp, nonce)) {
 
