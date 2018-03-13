@@ -4,6 +4,8 @@ import com.khh.base.common.Const;
 import com.khh.base.util.DateUtil;
 import com.khh.web.dao.UserMapper;
 import com.khh.web.domain.User;
+import com.khh.web.service._interface.UserService;
+import com.khh.web.util.UserUtil;
 import com.khh.wechat.exception.WechatExceptionEnum;
 import com.khh.wechat.service.WeChatService;
 import com.khh.wechat.util.MessageUtil;
@@ -16,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by 951087952@qq.com on 2018/3/5.
@@ -26,8 +30,8 @@ public class WeChatServiceImpl implements WeChatService {
 
     private static Logger log = LoggerFactory.getLogger(WeChatServiceImpl.class);
 
-    @Resource(name = "userMapper")
-    private UserMapper userMapper;
+    @Resource(name = "userService")
+    private UserService userService;
 
     public String processReq(BaseRequestMessage message) throws Exception {
 
@@ -106,9 +110,19 @@ public class WeChatServiceImpl implements WeChatService {
         String openId = message.getFromUserName();
         String text = null;
 
-        User user = userMapper.findByOpenId(openId);
-        if(user == null || user.getIsBinding() == 0){//还没有用户记录，或者用户还没注册的话
+        User user = userService.findByOpenId(openId);
+        if(user == null || user.getIsBinding() == UserUtil.USER_BINGDING_UNREGISTER){//还没有用户记录，或者用户还没注册的话
             text = "欢迎用户使用公众号，请点击菜单\"我\"--->\"绑定注册\",进行注册哦!";
+
+            //对用户信息进行插入
+            user = new User();
+            user.setId(UUID.randomUUID().toString());
+            user.setOpenId(openId);
+            user.setCreateTime(new Date());
+            user.setIsBinding(UserUtil.USER_BINGDING_UNREGISTER);
+            user.setStatus(UserUtil.USER_STATE_UNSUBSCRIBE);
+
+            userService.insertPO(user,false);
 
         }else if(user.getIsBinding() == 1){ // 用户已经注册了
             text = "亲爱的用户在 " + DateUtil.dateToString(user.getRegisterTime()) + " 注册成功";

@@ -71,7 +71,7 @@ create table tb_user
    id                   varchar(36) not null,
    open_id              varchar(50) not null,
    name                 varchar(50) comment '名字',
-   phone                varchar(13) not null,
+   phone                varchar(13) ,
    email                varchar(100),
    account              varchar(60) comment '帐号',
    is_binding           tinyint not null comment '是否注册了(是:1,否:0)',

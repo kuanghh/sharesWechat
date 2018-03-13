@@ -166,4 +166,18 @@
   <select id="findByOpenId" resultMap="BaseResultMap">
     select * from tb_user where open_id = #{openId}
   </select>
+
+    <select id="findForCheckExistInfo" parameterType="com.khh.web.vo.UserRegisterVO" resultType="java.lang.Integer">
+        select count(1) from tb_user
+        where 1=0
+          <if test="userRegisterVO.phone != null">
+             or phone = #{userRegisterVO.phone}
+          </if>
+          <if test="userRegisterVO.accont != null">
+             or accont = #{userRegisterVO.accont}
+          </if>
+          <if test="userRegisterVO.email != null">
+             or email = #{userRegisterVO.email}
+          </if>
+    </select>
 </mapper>
