@@ -25,6 +25,7 @@
 </style>
 </head>
 
+<script type="text/javascript" src="../common/common.js"></script>
 <body>
 
 	<div id="user">
@@ -37,14 +38,14 @@
 		<!--</div>-->
 		<div class="pd10">
 			<img class="logo_img" src="images/logo.jpg" />
-			<form method="post" action="">
+			<form id="submit_form" method="post" action="">
 				<div class="login_b_i">
 					<div class="login_input">
-						<div class="login_user"><input type="text" name="account" placeholder="帐号(6-10个字母，数字组合)" /></div>
-						<div class="login_user"><input type="text" name="name" placeholder="姓名" /></div>
-						<div class="login_user"><input type="password" name="password" placeholder="密码" /></div>
-						<div class="login_user"><input type="text" name="phone" placeholder="手机号码" /></div>
-						<div class="login_user"><input type="text" name="email" placeholder="邮箱" /></div>
+						<div class="login_user"><input class="info check" type="text" name="account" placeholder="帐号(6-10个字母，数字组合)" /></div>
+						<div class="login_user"><input class="info" type="text" name="name" placeholder="姓名" /></div>
+						<div class="login_user"><input class="info" type="password" name="password" placeholder="密码" /></div>
+						<div class="login_user"><input class="info check" type="text" name="phone" placeholder="手机号码" /></div>
+						<div class="login_user"><input class="info check" type="text" name="email" placeholder="邮箱" /></div>
 					</div>
 				</div>
 				<a class="login_submit">注册</a>
@@ -56,6 +57,15 @@
 </body>
 
 <script>
+    $(function () {
+        $(".check").blur(function () {
 
+
+        });
+
+        $(".login_submit").click(function () {
+
+        });
+    })
 </script>
 </html>
