@@ -10,6 +10,8 @@ public class User implements Serializable{
 
     private String name;
 
+    private String password;
+
     private String phone;
 
     private String email;
@@ -112,5 +114,13 @@ public class User implements Serializable{
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

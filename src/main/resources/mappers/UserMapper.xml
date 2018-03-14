@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="account" property="account" jdbcType="VARCHAR" />
@@ -15,7 +16,7 @@
     <result column="unregister_time" property="unregisterTime"  />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, open_id, name, phone, email, account, is_binding, status, create_time, register_time, 
+    id, open_id, name,password, phone, email, account, is_binding, status, create_time, register_time,
     unregister_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -29,11 +30,11 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.khh.web.domain.User" >
-    insert into tb_user (id, open_id, name, 
+    insert into tb_user (id, open_id, name,password,
       phone, email, account, 
       is_binding, status, create_time, 
       register_time, unregister_time)
-    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password},
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
       #{isBinding,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createTime},
       #{registerTime}, #{unregisterTime})
@@ -49,6 +50,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="password != null" >
+        password,
       </if>
       <if test="phone != null" >
         phone,
@@ -85,6 +89,9 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
@@ -120,6 +127,9 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
@@ -151,6 +161,7 @@
     update tb_user
     set open_id = #{openId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       account = #{account,jdbcType=VARCHAR},

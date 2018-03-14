@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50626
 File Encoding         : 65001
 
-Date: 2018-03-14 20:10:37
+Date: 2018-03-14 21:19:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -59,6 +59,7 @@ CREATE TABLE `tb_user` (
   `id` varchar(36) NOT NULL,
   `open_id` varchar(50) NOT NULL,
   `name` varchar(50) DEFAULT NULL COMMENT '名字',
+  `password` varchar(10) DEFAULT NULL COMMENT '密码',
   `phone` varchar(13) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `account` varchar(60) DEFAULT NULL COMMENT '帐号',
