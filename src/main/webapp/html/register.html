@@ -26,6 +26,7 @@
 </head>
 
 <script type="text/javascript" src="../common/common.js"></script>
+<script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
 <body>
 
 	<div id="user">
@@ -57,13 +58,92 @@
 </body>
 
 <script>
+
+	var can_submit = false;
+
     $(function () {
         $(".check").blur(function () {
 
+			var url = server_project + "/user/checkInfo.action";
 
+			var key = $(this).attr("name");
+			var value = $(this).val();
+
+			$.ajax({
+				url : url,
+				data : {"key" : key , "value" : value},
+				type : "POST",
+				dataType: "json",
+				success : function (data) {
+					if(data.code == 2000){
+						can_submit = true;
+					}else{
+						alert(data.message);
+						can_submit = false;
+					}
+				}
+
+			});
         });
 
+
         $(".login_submit").click(function () {
+			var url = server_project + "/user/register.action";
+
+			var isValid = true;
+
+			//获取url中的openId
+			var openId = GetQueryString("openId");
+			if(isStringEmpty(openId)){
+				alert("openId不存在");
+				isValid = false;
+			}else{
+				alert(openId);
+			}
+
+			var account = $("input[name='account']").val();
+			var name = $("input[name='name']").val();
+			var password = $("input[name='password']").val();
+			var phone = $("input[name='phone']").val();
+			var email = $("input[name='email']").val();
+
+
+			if(isStringEmpty(account)){
+				alert("帐号为空");
+				isValid = false;
+			}
+
+			if(isStringEmpty(phone)){
+				alert("手机号码为空");
+				isValid = false;
+			}
+
+			if(isStringEmpty(email)){
+				alert("邮箱为空");
+				isValid = false;
+			}
+
+			var data_json = {"openId":openId,"account":account,"name":name,"password":password,"phone":phone,"email":email};
+
+			if(isValid){
+				$.ajax({
+					url : url,
+					data : JSON.stringify(data_json),
+					type : "POST",
+					dataType: "json",
+					contentType:"application/json",
+					success : function (data) {
+						alert(data.message);
+						if(data.code == 2000){
+							// 关闭当前窗口
+							window.opener=null;
+							window.open('','_self');
+							window.close();
+						}
+					}
+
+				});
+			}
 
         });
     })

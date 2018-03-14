@@ -8,10 +8,7 @@ import com.khh.web.util.UserUtil;
 import com.khh.web.vo.UserRegisterVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -29,8 +26,8 @@ public class UserController extends BaseController{
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseBean register(@Valid UserRegisterVO userVO, BindingResult result) throws Exception{
+    @RequestMapping(value = "/register", method = RequestMethod.POST,consumes = "application/json")
+    public ResponseBean register(@Valid @RequestBody UserRegisterVO userVO, BindingResult result) throws Exception{
         ResponseBean responseBean = new ResponseBean();
 
         //信息验证
@@ -46,7 +43,7 @@ public class UserController extends BaseController{
         }else if(user.getIsBinding().equals(UserUtil.USER_BINGDING_UNREGISTER)){ //当前openId还没有注册
 
             //检测账号，邮箱，电话是否重复
-            if(userService.findForCheckExistInfo(userVO) > 0 ){
+            if(userService.findForCheckExistInfo(userVO) > 0){
                 responseBean.setErrorResponse("账号、邮箱或电话信息有重复");
                 return responseBean;
             }

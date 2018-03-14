@@ -1,99 +1,71 @@
-/*==============================================================*/
-/* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/3/8 20:46:32                            */
-/*==============================================================*/
+/*
+Navicat MySQL Data Transfer
 
+Source Server         : mysql
+Source Server Version : 50626
+Source Host           : localhost:3306
+Source Database       : graduation_design
 
-drop table if exists tb_check_code;
+Target Server Type    : MYSQL
+Target Server Version : 50626
+File Encoding         : 65001
 
-drop table if exists tb_shares;
+Date: 2018-03-14 20:10:37
+*/
 
-drop table if exists tb_shares_detailed;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists tb_user;
+-- ----------------------------
+-- Table structure for tb_shares
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_shares`;
+CREATE TABLE `tb_shares` (
+  `id` varchar(36) NOT NULL COMMENT 'å”¯ä¸€æ ‡è¯†',
+  `shares_num` varchar(36) NOT NULL COMMENT 'è‚¡ç¥¨ä»£ç ',
+  `shares_href` varchar(36) NOT NULL COMMENT 'è‚¡ç¥¨ç½‘å€',
+  `shares_name` varchar(36) NOT NULL COMMENT 'è‚¡ç¥¨åå­—',
+  `create_time` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-drop table if exists tb_user_search_log;
+-- ----------------------------
+-- Table structure for tb_shares_detailed
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_shares_detailed`;
+CREATE TABLE `tb_shares_detailed` (
+  `id` varchar(36) NOT NULL COMMENT 'å”¯ä¸€æ ‡è¯†',
+  `shares_id` varchar(36) NOT NULL COMMENT 'è‚¡ç¥¨å¤–é”®',
+  `create_time` datetime NOT NULL COMMENT 'åˆ›å»ºæ—¶é—´',
+  `open_price` int(11) NOT NULL COMMENT 'å¼€ç›˜ä»·',
+  `close_price` int(11) NOT NULL COMMENT 'æ”¶ç›˜ä»·',
+  `ceilling_price` int(11) NOT NULL COMMENT 'æœ€é«˜ä»·',
+  `floor_price` int(11) NOT NULL COMMENT 'æœ€ä½ä»·',
+  `rise_and_fall_range` int(11) NOT NULL COMMENT 'æ¶¨è·Œå¹…ï¼ˆ%ï¼‰',
+  `rise_and_fall_quota` int(11) NOT NULL COMMENT 'æ¶¨è·Œé¢',
+  `volume` int(11) NOT NULL COMMENT 'æˆäº¤é‡(æ‰‹)',
+  `turn_volume` int(11) NOT NULL COMMENT 'æˆäº¤é¢ï¼ˆä¸‡ï¼‰',
+  `turnover_rate` int(11) NOT NULL COMMENT 'æ¢æ‰‹ç‡ï¼ˆ%ï¼‰',
+  `amplitude` int(11) NOT NULL COMMENT 'æŒ¯å¹…',
+  `p_e_ratio` int(11) NOT NULL COMMENT 'å¸‚ç›ˆç‡',
+  `state` tinyint(4) NOT NULL COMMENT 'çŠ¶æ€',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*==============================================================*/
-/* Table: tb_check_code                                         */
-/*==============================================================*/
-create table tb_check_code
-(
-   id                   varchar(36) not null,
-   user_id              varchar(36) not null comment 'ÓÃ»§id',
-   open_id              varchar(36) not null comment 'open_id',
-   create_time          datetime not null comment 'Éú³ÉÊ±¼ä',
-   is_valid             tinyint not null comment 'ÊÇ·ñÓĞĞ§',
-   primary key (id)
-);
-
-/*==============================================================*/
-/* Table: tb_shares                                             */
-/*==============================================================*/
-create table tb_shares
-(
-   id                   varchar(36) not null comment 'Î¨Ò»±êÊ¶',
-   shares_num           varchar(36) not null comment '¹ÉÆ±´úÂë',
-   shares_href          varchar(36) not null comment '¹ÉÆ±ÍøÖ·',
-   shares_name          varchar(36) not null comment '¹ÉÆ±Ãû×Ö',
-   create_time          datetime not null comment '´´½¨Ê±¼ä',
-   primary key (id)
-);
-
-/*==============================================================*/
-/* Table: tb_shares_detailed                                    */
-/*==============================================================*/
-create table tb_shares_detailed
-(
-   id                   varchar(36) not null comment 'Î¨Ò»±êÊ¶',
-   shares_id            varchar(36) not null comment '¹ÉÆ±Íâ¼ü',
-   create_time          datetime not null comment '´´½¨Ê±¼ä',
-   open_price           int not null comment '¿ªÅÌ¼Û',
-   close_price          int not null comment 'ÊÕÅÌ¼Û',
-   ceilling_price       int not null comment '×î¸ß¼Û',
-   floor_price          int not null comment '×îµÍ¼Û',
-   rise_and_fall_range  int not null comment 'ÕÇµø·ù£¨%£©',
-   rise_and_fall_quota  int not null comment 'ÕÇµø¶î',
-   volume               int not null comment '³É½»Á¿(ÊÖ)',
-   turn_volume          int not null comment '³É½»¶î£¨Íò£©',
-   turnover_rate        int not null comment '»»ÊÖÂÊ£¨%£©',
-   amplitude            int not null comment 'Õñ·ù',
-   p_e_ratio            int not null comment 'ÊĞÓ¯ÂÊ',
-   state                tinyint not null comment '×´Ì¬',
-   primary key (id)
-);
-
-/*==============================================================*/
-/* Table: tb_user                                               */
-/*==============================================================*/
-create table tb_user
-(
-   id                   varchar(36) not null,
-   open_id              varchar(50) not null,
-   name                 varchar(50) comment 'Ãû×Ö',
-   phone                varchar(13) ,
-   email                varchar(100),
-   account              varchar(60) comment 'ÕÊºÅ',
-   is_binding           tinyint not null comment 'ÊÇ·ñ×¢²áÁË(ÊÇ:1,·ñ:0)',
-   status               tinyint comment '×´Ì¬(ÒÑ¹Ø×¢:1,Î´¹Ø×¢:0)',
-   create_time          datetime not null comment '¹Ø×¢Ê±¼ä',
-   register_time        datetime comment '×¢²áÊ±¼ä',
-   unregister_time      datetime comment 'È¡Ïû¹Ø×¢Ê±¼ä',
-   primary key (id)
-);
-
-/*==============================================================*/
-/* Table: tb_user_search_log                                    */
-/*==============================================================*/
-create table tb_user_search_log
-(
-   id                   varchar(36) not null,
-   user_id              varchar(36) not null,
-   open_id              varchar(36) not null,
-   start_time           datetime not null,
-   end_time             datetime not null,
-   shares_id            varchar(36) not null,
-   create_time          datetime not null,
-   primary key (id)
-);
-
+-- ----------------------------
+-- Table structure for tb_user
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_user`;
+CREATE TABLE `tb_user` (
+  `id` varchar(36) NOT NULL,
+  `open_id` varchar(50) NOT NULL,
+  `name` varchar(50) DEFAULT NULL COMMENT 'åå­—',
+  `phone` varchar(13) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `account` varchar(60) DEFAULT NULL COMMENT 'å¸å·',
+  `is_binding` tinyint(4) NOT NULL COMMENT 'æ˜¯å¦æ³¨å†Œäº†(æ˜¯:1,å¦:0)',
+  `status` tinyint(4) DEFAULT NULL COMMENT 'çŠ¶æ€(å·²å…³æ³¨:1,æœªå…³æ³¨:0)',
+  `create_time` datetime NOT NULL COMMENT 'å…³æ³¨æ—¶é—´',
+  `register_time` datetime DEFAULT NULL COMMENT 'æ³¨å†Œæ—¶é—´',
+  `unregister_time` datetime DEFAULT NULL COMMENT 'å–æ¶ˆå…³æ³¨æ—¶é—´',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -14,7 +14,7 @@ public class Const {
     /**
      * 内网穿透路径
      */
-    public static String project_loc_localhost = "http://0ae566b9.ngrok.io/sharesWechat";
+    public static String project_loc_localhost = "http://ba669d3b.ngrok.io/sharesWechat";
 
 
 }

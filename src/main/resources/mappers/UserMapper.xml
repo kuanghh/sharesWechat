@@ -173,8 +173,8 @@
           <if test="userRegisterVO.phone != null">
              or phone = #{userRegisterVO.phone}
           </if>
-          <if test="userRegisterVO.accont != null">
-             or accont = #{userRegisterVO.accont}
+          <if test="userRegisterVO.account != null">
+             or account = #{userRegisterVO.account}
           </if>
           <if test="userRegisterVO.email != null">
              or email = #{userRegisterVO.email}
