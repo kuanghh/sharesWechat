@@ -102,4 +102,6 @@
 		  <!--p:configLocation="classpath:ehcache.xml"/>-->
 	<!--<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"-->
 		  <!--p:cacheManager-ref="ehCacheManagerFactory"/>-->
+
+	<import resource="spring-quartz.xml"/>
 </beans>
