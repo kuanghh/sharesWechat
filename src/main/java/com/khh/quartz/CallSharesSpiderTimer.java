@@ -1,5 +1,6 @@
 package com.khh.quartz;
 
+import com.khh.thread.SharesThread;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Component;
 public class CallSharesSpiderTimer {
 
 
-//    @Scheduled(cron = "0/5 * * ? * *")
-//    public void callsharesSpider() throws Exception{
-//        System.out.println("这是一个任务调度器,每五秒执行一次");
-//    }
+    @Scheduled(cron = "5 * * ? * *")
+    public void callsharesSpider() throws Exception{
+        System.out.println("开始跑线程啦");
+        Thread thread = new Thread(new SharesThread());
+        thread.start();
+    }
 
 
 
