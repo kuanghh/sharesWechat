@@ -121,7 +121,8 @@ public class WeiXinUtil {
 			String requestURL = MASS_URL.replace("ACCESS_TOKEN", accessToken.getToken());
 
 			String message = JSONObject.toJSONString(messageVO);
-			sendHttpsRequest(requestURL, HttpPost.METHOD_NAME, message);
+			JSONObject obj = sendHttpsRequest(requestURL, HttpPost.METHOD_NAME, message);
+			System.out.println(obj.toString());
 			log.info("每天群发推送...");
 		} else {
 			log.error("获取token失败");

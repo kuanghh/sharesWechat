@@ -61,7 +61,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         //将所有注册过的用户的OpenId获取出来
         List<String> opIdList = userMapper.findAllValidOpenId();
 
-        if(opIdList == null || opIdList.isEmpty()) return; //没有用户就不操作了
+        if(opIdList == null || opIdList.size() <= 1) return; //没有用户就不操作了,如果用户只有一个，也会出错
 
         //获取市盈率top10
         List<SharesVO> pERatioTop = sharesDetailedMapper.findTopSharesByKey(SharesParamEnum.p_e_ratio.getField(), today,5);
