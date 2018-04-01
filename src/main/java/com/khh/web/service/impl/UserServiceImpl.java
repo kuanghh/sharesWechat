@@ -14,6 +14,7 @@ import com.khh.web.vo.UserRegisterVO;
 import com.khh.wechat.util.MessageUtil;
 import com.khh.wechat.util.WeiXinUtil;
 import com.khh.wechat.vo.MassMessageVO;
+import com.khh.wechat.vo.TextVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -82,7 +83,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
         vo.setMsgtype(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
         vo.setTouser(opIdList);
-        vo.setText(builder.toString());
+        TextVO textVO = new TextVO(builder.toString());
+
+        vo.setText(textVO);
 
         System.out.println(builder.toString());
         WeiXinUtil.sendRequestToEveryOne(vo);

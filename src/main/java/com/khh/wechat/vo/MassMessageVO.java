@@ -11,7 +11,7 @@ public class MassMessageVO implements Serializable{
 
     private List<String> touser;
     private String msgtype;
-    private String text;
+    private TextVO text;
 
 
     public List<String> getTouser() {
@@ -30,11 +30,11 @@ public class MassMessageVO implements Serializable{
         this.msgtype = msgtype;
     }
 
-    public String getText() {
+    public TextVO getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(TextVO text) {
         this.text = text;
     }
 }
