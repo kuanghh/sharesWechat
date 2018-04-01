@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.khh.base.exception.ErrorCode;
 import com.khh.wechat.vo.AccessToken;
+import com.khh.wechat.vo.MassMessageVO;
 import com.khh.wechat.vo.button.Button;
 import com.khh.wechat.vo.button.CommonButton;
 import com.khh.wechat.vo.button.ComplexButton;
@@ -108,8 +109,28 @@ public class WeiXinUtil {
 		return HttpsUtil.httpRequest(requestUrl, requestMethod, outputStr);
 	}
 
+
+	/**
+	 * 调用群发接口
+	 * @throws Exception
+	 */
+	private static String MASS_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=ACCESS_TOKEN";
+	public static void sendRequestToEveryOne(MassMessageVO messageVO) throws Exception{
+		AccessToken accessToken = getAccessToken();
+		if (accessToken != null) {
+			String requestURL = MASS_URL.replace("ACCESS_TOKEN", accessToken.getToken());
+
+			String message = JSONObject.toJSONString(messageVO);
+			sendHttpsRequest(requestURL, HttpPost.METHOD_NAME, message);
+			log.info("每天群发推送...");
+		} else {
+			log.error("获取token失败");
+		}
+	}
+
+
 	
-	/*
+	/**
 	 * 验证签名
 	 * 
 	 */
@@ -147,7 +168,7 @@ public class WeiXinUtil {
 		
 	}
 	
-	/*
+	/**
 	 * 将字节数组转转换为十六进制字符串
 	
 	 */
@@ -158,7 +179,7 @@ public class WeiXinUtil {
 		}
 		return strDigest;
 	}
-	/*
+	/**
 	 * 将字节转换为十六进制字符串
 	 */
 	private static String byteToHexStr(byte mByte){

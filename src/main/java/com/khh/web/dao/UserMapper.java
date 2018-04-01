@@ -5,6 +5,8 @@ import com.khh.web.domain.User;
 import com.khh.web.vo.UserRegisterVO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper extends BaseDao<User>{
     int deleteByPrimaryKey(String id);
 
@@ -32,4 +34,14 @@ public interface UserMapper extends BaseDao<User>{
      * @throws Exception
      */
     int findForCheckExistInfo(@Param("userRegisterVO")UserRegisterVO vo) throws Exception;
+
+
+    /**
+     * 获取所有注册过的用户openId
+     * @return
+     * @throws Exception
+     */
+    List<String> findAllValidOpenId() throws Exception;
+
+
 }

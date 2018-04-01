@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.khh.web.dao.TbSharesDetailedMapper" >
+  <resultMap id="BaseResultMap" type="com.khh.web.domain.TbSharesDetailed" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="shares_id" property="sharesId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="open_price" property="openPrice" jdbcType="INTEGER" />
+    <result column="close_price" property="closePrice" jdbcType="INTEGER" />
+    <result column="ceilling_price" property="ceillingPrice" jdbcType="INTEGER" />
+    <result column="floor_price" property="floorPrice" jdbcType="INTEGER" />
+    <result column="rise_and_fall_range" property="riseAndFallRange" jdbcType="INTEGER" />
+    <result column="rise_and_fall_quota" property="riseAndFallQuota" jdbcType="INTEGER" />
+    <result column="volume" property="volume" jdbcType="INTEGER" />
+    <result column="turn_volume" property="turnVolume" jdbcType="INTEGER" />
+    <result column="turnover_rate" property="turnoverRate" jdbcType="INTEGER" />
+    <result column="amplitude" property="amplitude" jdbcType="INTEGER" />
+    <result column="p_e_ratio" property="pERatio" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+  </resultMap>
+
+  <resultMap id="ShareVOResultMap" type="com.khh.web.vo.SharesVO" >
+
+    <result column="shares_num" property="sharesNum" jdbcType="VARCHAR" />
+    <result column="shares_href" property="sharesHref" jdbcType="VARCHAR" />
+    <result column="shares_name" property="sharesName" jdbcType="VARCHAR" />
+
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="open_price" property="openPrice" jdbcType="INTEGER" />
+    <result column="close_price" property="closePrice" jdbcType="INTEGER" />
+    <result column="ceilling_price" property="ceillingPrice" jdbcType="INTEGER" />
+    <result column="floor_price" property="floorPrice" jdbcType="INTEGER" />
+    <result column="rise_and_fall_range" property="riseAndFallRange" jdbcType="INTEGER" />
+    <result column="rise_and_fall_quota" property="riseAndFallQuota" jdbcType="INTEGER" />
+    <result column="volume" property="volume" jdbcType="INTEGER" />
+    <result column="turn_volume" property="turnVolume" jdbcType="INTEGER" />
+    <result column="turnover_rate" property="turnoverRate" jdbcType="INTEGER" />
+    <result column="amplitude" property="amplitude" jdbcType="INTEGER" />
+    <result column="p_e_ratio" property="pERatio" jdbcType="INTEGER" />
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, shares_id, create_time, open_price, close_price, ceilling_price, floor_price, 
+    rise_and_fall_range, rise_and_fall_quota, volume, turn_volume, turnover_rate, amplitude, 
+    p_e_ratio, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_shares_detailed
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_shares_detailed
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.khh.web.domain.TbSharesDetailed" >
+    insert into tb_shares_detailed (id, shares_id, create_time, 
+      open_price, close_price, ceilling_price, 
+      floor_price, rise_and_fall_range, rise_and_fall_quota, 
+      volume, turn_volume, turnover_rate, 
+      amplitude, p_e_ratio, state
+      )
+    values (#{id,jdbcType=VARCHAR}, #{sharesId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{openPrice,jdbcType=INTEGER}, #{closePrice,jdbcType=INTEGER}, #{ceillingPrice,jdbcType=INTEGER}, 
+      #{floorPrice,jdbcType=INTEGER}, #{riseAndFallRange,jdbcType=INTEGER}, #{riseAndFallQuota,jdbcType=INTEGER}, 
+      #{volume,jdbcType=INTEGER}, #{turnVolume,jdbcType=INTEGER}, #{turnoverRate,jdbcType=INTEGER}, 
+      #{amplitude,jdbcType=INTEGER}, #{pERatio,jdbcType=INTEGER}, #{state,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.khh.web.domain.TbSharesDetailed" >
+    insert into tb_shares_detailed
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sharesId != null" >
+        shares_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="openPrice != null" >
+        open_price,
+      </if>
+      <if test="closePrice != null" >
+        close_price,
+      </if>
+      <if test="ceillingPrice != null" >
+        ceilling_price,
+      </if>
+      <if test="floorPrice != null" >
+        floor_price,
+      </if>
+      <if test="riseAndFallRange != null" >
+        rise_and_fall_range,
+      </if>
+      <if test="riseAndFallQuota != null" >
+        rise_and_fall_quota,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="turnVolume != null" >
+        turn_volume,
+      </if>
+      <if test="turnoverRate != null" >
+        turnover_rate,
+      </if>
+      <if test="amplitude != null" >
+        amplitude,
+      </if>
+      <if test="pERatio != null" >
+        p_e_ratio,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesId != null" >
+        #{sharesId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openPrice != null" >
+        #{openPrice,jdbcType=INTEGER},
+      </if>
+      <if test="closePrice != null" >
+        #{closePrice,jdbcType=INTEGER},
+      </if>
+      <if test="ceillingPrice != null" >
+        #{ceillingPrice,jdbcType=INTEGER},
+      </if>
+      <if test="floorPrice != null" >
+        #{floorPrice,jdbcType=INTEGER},
+      </if>
+      <if test="riseAndFallRange != null" >
+        #{riseAndFallRange,jdbcType=INTEGER},
+      </if>
+      <if test="riseAndFallQuota != null" >
+        #{riseAndFallQuota,jdbcType=INTEGER},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=INTEGER},
+      </if>
+      <if test="turnVolume != null" >
+        #{turnVolume,jdbcType=INTEGER},
+      </if>
+      <if test="turnoverRate != null" >
+        #{turnoverRate,jdbcType=INTEGER},
+      </if>
+      <if test="amplitude != null" >
+        #{amplitude,jdbcType=INTEGER},
+      </if>
+      <if test="pERatio != null" >
+        #{pERatio,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.khh.web.domain.TbSharesDetailed" >
+    update tb_shares_detailed
+    <set >
+      <if test="sharesId != null" >
+        shares_id = #{sharesId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openPrice != null" >
+        open_price = #{openPrice,jdbcType=INTEGER},
+      </if>
+      <if test="closePrice != null" >
+        close_price = #{closePrice,jdbcType=INTEGER},
+      </if>
+      <if test="ceillingPrice != null" >
+        ceilling_price = #{ceillingPrice,jdbcType=INTEGER},
+      </if>
+      <if test="floorPrice != null" >
+        floor_price = #{floorPrice,jdbcType=INTEGER},
+      </if>
+      <if test="riseAndFallRange != null" >
+        rise_and_fall_range = #{riseAndFallRange,jdbcType=INTEGER},
+      </if>
+      <if test="riseAndFallQuota != null" >
+        rise_and_fall_quota = #{riseAndFallQuota,jdbcType=INTEGER},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume,jdbcType=INTEGER},
+      </if>
+      <if test="turnVolume != null" >
+        turn_volume = #{turnVolume,jdbcType=INTEGER},
+      </if>
+      <if test="turnoverRate != null" >
+        turnover_rate = #{turnoverRate,jdbcType=INTEGER},
+      </if>
+      <if test="amplitude != null" >
+        amplitude = #{amplitude,jdbcType=INTEGER},
+      </if>
+      <if test="pERatio != null" >
+        p_e_ratio = #{pERatio,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.khh.web.domain.TbSharesDetailed" >
+    update tb_shares_detailed
+    set shares_id = #{sharesId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      open_price = #{openPrice,jdbcType=INTEGER},
+      close_price = #{closePrice,jdbcType=INTEGER},
+      ceilling_price = #{ceillingPrice,jdbcType=INTEGER},
+      floor_price = #{floorPrice,jdbcType=INTEGER},
+      rise_and_fall_range = #{riseAndFallRange,jdbcType=INTEGER},
+      rise_and_fall_quota = #{riseAndFallQuota,jdbcType=INTEGER},
+      volume = #{volume,jdbcType=INTEGER},
+      turn_volume = #{turnVolume,jdbcType=INTEGER},
+      turnover_rate = #{turnoverRate,jdbcType=INTEGER},
+      amplitude = #{amplitude,jdbcType=INTEGER},
+      p_e_ratio = #{pERatio,jdbcType=INTEGER},
+      state = #{state,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="findTopSharesByKey" parameterType="java.lang.String" resultMap="ShareVOResultMap">
+      select
+        s.shares_num as shares_num,
+        s.shares_href as shares_href ,
+        s.shares_name as shares_name,
+        d.create_time as create_time,
+        d.open_price  as open_price,
+        d.close_price as close_price,
+        d.ceilling_price as ceilling_price,
+        d.floor_price as floor_price,
+        d.rise_and_fall_range as rise_and_fall_range,
+        d.rise_and_fall_quota as rise_and_fall_quota,
+        d.volume as volume,
+        d.turn_volume as turn_volume,
+        d.turnover_rate as turnover_rate,
+        d.amplitude as amplitude,
+        d.p_e_ratio as p_e_ratio
+      from tb_shares_detailed d, tb_shares s
+      where d.create_time = #{today} and d.shares_id = s.id
+      ORDER BY d.${key} DESC limit ${num}
+  </select>
+</mapper>

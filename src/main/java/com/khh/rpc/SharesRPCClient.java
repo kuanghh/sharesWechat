@@ -1,5 +1,6 @@
 package com.khh.rpc;
 
+import com.khh.web.service._interface.SpiderLogService;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
@@ -10,9 +11,11 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * Created by 951087952@qq.com on 2018/3/25.
- *
+ * 每周星期一到五下午4点开始调用的爬虫
  */
 public class SharesRPCClient {
+
+    private SpiderLogService spiderLogService;
 
     private Connection connection;
     private Channel channel;
@@ -21,7 +24,9 @@ public class SharesRPCClient {
 
     public SharesRPCClient() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(RPCUtil.HOST);
+
+//        factory.setHost(RPCUtil.HOST);
+        factory.setHost(RPCUtil.SERVER);
 
 
         connection = factory.newConnection();
@@ -32,7 +37,7 @@ public class SharesRPCClient {
         replyQueueName = channel.queueDeclare().getQueue();//创建一条匿名的回应队列，用来存放服务端响应的数据
     }
 
-    public String call(String message) throws Exception{
+    public String call(String queueName, String message) throws Exception{
         //配置 corrID，来作为关联的唯一凭证
         String corrId = UUID.randomUUID().toString();
         AMQP.BasicProperties props = new AMQP.BasicProperties
@@ -41,7 +46,7 @@ public class SharesRPCClient {
                 .replyTo(replyQueueName)
                 .build();
 
-        channel.basicPublish("", RPCUtil.RPC_QUEUE_NAME, props, message.getBytes("UTF-8"));
+        channel.basicPublish("", queueName, props, message.getBytes("UTF-8"));
 
         final BlockingQueue<String> response = new ArrayBlockingQueue<String>(1);
 
@@ -55,22 +60,14 @@ public class SharesRPCClient {
             }
         });
 
+        close();//关闭
         return response.take();
     }
 
-    public void close() throws IOException {
+    public void close() throws Exception {
+        channel.close();
         connection.close();
     }
 
-    public void run(String message) throws Exception{
-        String response = "";
-        try{
-            System.out.println(" client send request");
-            response = this.call(message);
-            System.out.println(" client get Response : " + response);
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 }

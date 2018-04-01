@@ -26,4 +26,11 @@ public interface UserService extends BaseService<User>{
      * @throws Exception
      */
     int findForCheckExistInfo(UserRegisterVO vo) throws Exception;
+
+
+    /**
+     * 每天爬虫获取数据后,推送消息给用户
+     * @throws Exception
+     */
+    void sendSharesMessageToAllUser() throws Exception;
 }

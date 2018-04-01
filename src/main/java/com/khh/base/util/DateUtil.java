@@ -17,4 +17,9 @@ public class DateUtil {
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
         return formatter.format(date);
     }
+
+    public static String getToday() throws Exception{
+        return dateToString(new Date(), "yyyy-MM-dd");
+
+    }
 }

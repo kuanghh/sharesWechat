@@ -191,4 +191,9 @@
              or email = #{userRegisterVO.email}
           </if>
     </select>
+
+  <select id="findAllValidOpenId" resultType="String" >
+    select open_id from tb_user
+      where status = 1 and is_binding = 1
+  </select>
 </mapper>

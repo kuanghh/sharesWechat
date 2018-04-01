@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.khh.web.dao.TbSpiderLogMapper" >
+  <resultMap id="BaseResultMap" type="com.khh.web.domain.TbSpiderLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="start_day" property="startDay" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, start_time, end_time, state, start_day
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_spider_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_spider_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.khh.web.domain.TbSpiderLog" >
+    insert into tb_spider_log (id, start_time, end_time, 
+      state, start_day)
+    values (#{id,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=TINYINT}, #{startDay,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.khh.web.domain.TbSpiderLog" >
+    insert into tb_spider_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="startDay != null" >
+        start_day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="startDay != null" >
+        #{startDay,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.khh.web.domain.TbSpiderLog" >
+    update tb_spider_log
+    <set >
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="startDay != null" >
+        start_day = #{startDay,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.khh.web.domain.TbSpiderLog" >
+    update tb_spider_log
+    set start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=TINYINT},
+      start_day = #{startDay,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findByTime" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from tb_spider_log where start_day = #{time} ORDER by start_time limit 1
+  </select>
+</mapper>

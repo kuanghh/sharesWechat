@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.khh.web.dao.TbSharesMapper" >
+  <resultMap id="BaseResultMap" type="com.khh.web.domain.TbShares" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="shares_num" property="sharesNum" jdbcType="VARCHAR" />
+    <result column="shares_href" property="sharesHref" jdbcType="VARCHAR" />
+    <result column="shares_name" property="sharesName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, shares_num, shares_href, shares_name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_shares
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_shares
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.khh.web.domain.TbShares" >
+    insert into tb_shares (id, shares_num, shares_href, 
+      shares_name, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{sharesNum,jdbcType=VARCHAR}, #{sharesHref,jdbcType=VARCHAR}, 
+      #{sharesName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.khh.web.domain.TbShares" >
+    insert into tb_shares
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sharesNum != null" >
+        shares_num,
+      </if>
+      <if test="sharesHref != null" >
+        shares_href,
+      </if>
+      <if test="sharesName != null" >
+        shares_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesNum != null" >
+        #{sharesNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesHref != null" >
+        #{sharesHref,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesName != null" >
+        #{sharesName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.khh.web.domain.TbShares" >
+    update tb_shares
+    <set >
+      <if test="sharesNum != null" >
+        shares_num = #{sharesNum,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesHref != null" >
+        shares_href = #{sharesHref,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesName != null" >
+        shares_name = #{sharesName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.khh.web.domain.TbShares" >
+    update tb_shares
+    set shares_num = #{sharesNum,jdbcType=VARCHAR},
+      shares_href = #{sharesHref,jdbcType=VARCHAR},
+      shares_name = #{sharesName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
