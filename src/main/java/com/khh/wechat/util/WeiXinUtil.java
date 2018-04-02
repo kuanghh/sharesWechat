@@ -123,7 +123,7 @@ public class WeiXinUtil {
 			String message = JSONObject.toJSONString(messageVO);
 			JSONObject obj = sendHttpsRequest(requestURL, HttpPost.METHOD_NAME, message);
 			if (!obj.getInteger("errcode").equals(ErrorCode.SUCCESS)) {
-				log.error("群发推送失败" + obj.getString("errmsg"));
+				log.error("群发推送失败： " + obj.getString("errmsg") + ", errcode: " +obj.getInteger("errcode"));
 			}else{
 				log.debug("群发推送成功");
 			}
