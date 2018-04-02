@@ -124,6 +124,7 @@ public class WeiXinUtil {
 			JSONObject obj = sendHttpsRequest(requestURL, HttpPost.METHOD_NAME, message);
 			if (!obj.getInteger("errcode").equals(ErrorCode.SUCCESS)) {
 				log.error("群发推送失败： " + obj.getString("errmsg") + ", errcode: " +obj.getInteger("errcode"));
+				// 45065	相同 clientmsgid 已存在群发记录，返回数据中带有已存在的群发任务的 msgid
 			}else{
 				log.debug("群发推送成功");
 			}
