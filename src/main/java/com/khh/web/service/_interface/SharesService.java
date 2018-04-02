@@ -9,5 +9,11 @@ import com.khh.web.domain.User;
  */
 public interface SharesService extends BaseService<TbShares>{
 
-
+    /**
+     * 根据股票代码查询
+     * @param sharesNum
+     * @return
+     * @throws Exception
+     */
+    TbShares findBySharesNum(String sharesNum) throws Exception;
 }

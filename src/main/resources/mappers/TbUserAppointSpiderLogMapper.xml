@@ -130,4 +130,8 @@
       msg_id = #{msgId}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="findByMsgId" resultMap="BaseResultMap">
+    select * from tb_user_appoint_spider_log where msg_id = #{msgId}
+  </select>
 </mapper>

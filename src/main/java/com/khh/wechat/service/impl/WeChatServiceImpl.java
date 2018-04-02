@@ -1,11 +1,15 @@
 package com.khh.wechat.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.khh.base.common.Const;
 import com.khh.base.util.DateUtil;
 import com.khh.web.dao.UserMapper;
+import com.khh.web.domain.TbShares;
 import com.khh.web.domain.User;
+import com.khh.web.service._interface.SharesService;
 import com.khh.web.service._interface.UserService;
 import com.khh.web.util.UserUtil;
+import com.khh.web.vo.CallSharesVO;
 import com.khh.wechat.exception.WechatExceptionEnum;
 import com.khh.wechat.service.WeChatService;
 import com.khh.wechat.util.MessageUtil;
@@ -32,6 +36,9 @@ public class WeChatServiceImpl implements WeChatService {
 
     @Resource(name = "userService")
     private UserService userService;
+
+    @Resource(name = "sharesService")
+    private SharesService sharesService;
 
     public String processReq(BaseRequestMessage message) throws Exception {
 
@@ -69,9 +76,44 @@ public class WeChatServiceImpl implements WeChatService {
      */
     private String handleTextTypeMessage(BaseRequestMessage message) throws Exception{
         TextMessage textMessage = new TextMessage(message);
-        textMessage.setContent("闭嘴!!!!!");
 
+
+        String content = message.getKey("content").toString(); //用户发的消息
+        String responseContent = "闭嘴!!!!!";
+
+        if(content.indexOf("#") == 0){
+            responseContent = callApppointSharesMethod(message, content.substring(1,content.length()));
+        }
+        textMessage.setContent(responseContent);
         return MessageUtil.textMessageToXml(textMessage);
+    }
+
+    /**
+     * 调用实时爬虫抓取数据方法
+     * @param message
+     * @return
+     */
+    private String callApppointSharesMethod(BaseRequestMessage message, String sharesNum) throws Exception{
+
+        String response = "";
+
+        //先从数据库中,查找是否存在这只股票
+        TbShares shares = sharesService.findBySharesNum(sharesNum);
+        String openId = message.getFromUserName();
+        if(shares == null){
+            response = "你所输入的证券代码不存在,本系统只支持深证A股的数据";
+        }else{
+            //在这里组装调用爬虫的json数据
+            CallSharesVO vo = new CallSharesVO();
+            vo.setOpen_id(openId);
+            vo.setUrl(shares.getSharesHref());
+            vo.setMsg_id(message.getMsgId());
+            vo.setShares_num(shares.getSharesNum());
+
+            String jsonStr = JSONObject.toJSONString(vo);
+
+        }
+        return response;
     }
 
     /**
@@ -124,8 +166,14 @@ public class WeChatServiceImpl implements WeChatService {
 
             userService.insertPO(user,false);
 
-        }else if(user.getIsBinding() == 1){ // 用户已经注册了
+        }else if(user.getIsBinding().equals(UserUtil.USER_BINGDING_REGISTER)){ // 用户已经注册了
+
+            if(user.getStatus().equals(UserUtil.USER_STATE_UNSUBSCRIBE)){ //如果用户注册了,但是是返回关注的则
+                user.setStatus(UserUtil.USER_BINGDING_REGISTER);
+                userService.updatePO(user, false);
+            }
             text = "亲爱的用户在 " + DateUtil.dateToString(user.getRegisterTime()) + " 注册成功";
+
         }
 
         TextMessage textMessage = new TextMessage(message);
@@ -155,10 +203,26 @@ public class WeChatServiceImpl implements WeChatService {
             baseMessage = handleRegisterEvent(message);
 
         }else if(WeiXinUtil.button_a3_2_key.equals(button_key)){// 我的信息
+            //todo ...
 
-
+        }else if(WeiXinUtil.button_a1_1_key.equals(button_key)){// 实时股票信息
+            baseMessage = handleRealTimeSharesEvent(message);
         }
         return MessageUtil.baseMessageToXml(baseMessage);
+    }
+
+    /**
+     * 处理实时股票信息按钮事件
+     * @param message
+     * @return
+     */
+    private BaseMessage handleRealTimeSharesEvent(BaseRequestMessage message) throws Exception{
+        TextMessage textMessage = new TextMessage(message);
+
+        String text = "请以<a href='javascript:void(0)'>'#+股票代码'</a>输入代码获取实时数据信息(例如:#603899)";
+        textMessage.setContent(text);
+
+        return textMessage;
     }
 
     /**
@@ -166,19 +230,24 @@ public class WeChatServiceImpl implements WeChatService {
      * @param message
      * @return
      */
-    private BaseMessage handleRegisterEvent(BaseRequestMessage message){
+    private BaseMessage handleRegisterEvent(BaseRequestMessage message) throws Exception{
         TextMessage textMessage = new TextMessage(message);
-
-        // todo  这里需要，如果用户已经注册了，则提示用户，“亲爱的用户你已经在xxxx时间注册了，谢谢”
 
         //获取用户的openId
         String openId = message.getFromUserName();
+        String text = "";
 
-        String url = Const.project_loc_localhost + "/html/register.html?openId=" + openId;
+        User user = userService.findByOpenId(openId);//如果用户已经注册了，则提示问候语
 
-        //组织url
-        String text = ("亲爱的用户，欢迎点击<a href='" + url + "'>注册</a>进入注册页面，并进行注册");
+        if(user != null && user.getIsBinding().equals(UserUtil.USER_BINGDING_REGISTER) && user.getStatus().equals(UserUtil.USER_STATE_SUBSCRIBE)){
 
+            text = "亲爱的用户你已经在" + DateUtil.dateToString(user.getRegisterTime()) + "时间注册了，谢谢你的关注~";
+        }else {
+
+            String url = Const.project_loc_localhost + "/html/register.html?openId=" + openId;
+            //组织url
+            text = ("亲爱的用户，欢迎点击<a href='" + url + "'>注册</a>进入注册页面，并进行注册");
+        }
         textMessage.setContent(text);
         return textMessage;
     }

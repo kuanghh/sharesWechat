@@ -5,8 +5,10 @@ import com.khh.rpc.RPCUtil;
 import com.khh.rpc.SharesRPCClient;
 import com.khh.web.domain.TbSharesDetailed;
 import com.khh.web.domain.TbSpiderLog;
+import com.khh.web.domain.TbUserAppointSpiderLog;
 import com.khh.web.enm.SharesParamEnum;
 import com.khh.web.service._interface.SpiderLogService;
+import com.khh.web.service._interface.UserAppointSpiderLogService;
 import com.khh.web.service._interface.UserService;
 import com.khh.web.vo.SharesInterface;
 import com.khh.web.vo.SharesVO;
@@ -26,6 +28,7 @@ public class SharesUtil {
 
     private static SpiderLogService spiderLogService;
     private static UserService userService;
+    private static UserAppointSpiderLogService userAppointSpiderLogService;
     private static ApplicationContext ac;
 
     static{
@@ -33,6 +36,7 @@ public class SharesUtil {
             ac = new ClassPathXmlApplicationContext("spring/spring.xml");
             spiderLogService = (SpiderLogService) ac.getBean("spiderLogService");
             userService = (UserService) ac.getBean("userService");
+            userAppointSpiderLogService = (UserAppointSpiderLogService) ac.getBean("userAppointSpiderLogService");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,6 +74,7 @@ public class SharesUtil {
                     if(spiderLog != null){
                         break;
                     }
+                    System.out.println("检查一次..");
                     Thread.sleep(findFrequency); //每6分钟检查一次
                     allTime -= findFrequency;
                     if(allTime < 0){
@@ -98,6 +103,26 @@ public class SharesUtil {
 
 
     /**
+     * 调用实时爬虫
+     * @param jsonData
+     * @param msgId
+     * @throws Exception
+     */
+    public static void runAppointSpider(String jsonData, String msgId) throws Exception{
+        SharesRPCClient client = new SharesRPCClient();
+        String response = client.call(RPCUtil.RPC_QUEUE_NAME, jsonData);
+
+        if(RPCUtil.RPC_RESPONSE_STATE_SUCCESS.equals(response)){//获取数据成功
+            //由于是实时爬虫,所以python爬虫也没有调用新的线程去调用爬虫，所以是按顺序执行的
+            TbUserAppointSpiderLog po = userAppointSpiderLogService.findByMsgId(msgId);
+            if(po == null || po.getState() == SharesCommonUtil.APPOINT_SPIDER_LOG_STATE_FAILD){//调用失败
+                //todo...
+            }
+        }
+
+    }
+
+    /**
      * 将股票topN转换成固定文字
      * @param list
      * @param key 关键字
@@ -110,16 +135,16 @@ public class SharesUtil {
 
         builder.append("今天<a href='javascript:void(0);'>")
                 .append(key.getDesc())
-                .append("</a>top10的股票有: \n");
+                .append("</a>top").append(list.size()).append("的股票有: \n");
 
         for (int i = 0; i < list.size(); i++) {
             SharesVO sharesVO = list.get(i);
-            builder.append(i).append(". ")
+            builder.append("(").append(i + 1).append(")").append(". ")
                     .append("<a href='").append(sharesVO.getSharesHref()).append("'>")
                     .append(sharesVO.getSharesNum())
                     .append("</a>").append("  ")
-                    .append(sharesVO.getSharesName()).append("  ")
-                    .append(key.getDesc()).append("为: ")
+                    .append(sharesVO.getSharesName()).append("\n")
+                    .append("      ").append(key.getDesc()).append("为: ")
                     .append(getSharesValue(sharesVO, key.getField())).append("\n");
 
         }

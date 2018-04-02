@@ -17,9 +17,15 @@ public class SharesServiceImpl extends BaseServiceImpl<TbShares> implements Shar
     private TbSharesMapper tbSharesMapper;
 
     @Resource(name = "tbSharesMapper")
-    public void setUserMapper(TbSharesMapper tbSharesMapper){
+    public void setTbSharesMapper(TbSharesMapper tbSharesMapper){
         this.tbSharesMapper = tbSharesMapper;
         this.setBaseDao(tbSharesMapper);
     }
 
+    @Override
+    public TbShares findBySharesNum(String sharesNum) throws Exception {
+        if(sharesNum == null || sharesNum.trim().length() == 1) return null;
+
+        return tbSharesMapper.findBySharesNum(sharesNum);
+    }
 }

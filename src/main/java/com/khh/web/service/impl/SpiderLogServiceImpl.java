@@ -30,7 +30,6 @@ public class SpiderLogServiceImpl extends BaseServiceImpl<TbSpiderLog> implement
         //获取当天日期
         String today = DateUtil.dateToString(new Date(), "yyyy-MM-dd");
 
-
         return tbSpiderLogMapper.findByTime(today);
     }
 }

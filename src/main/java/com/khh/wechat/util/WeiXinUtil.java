@@ -122,8 +122,11 @@ public class WeiXinUtil {
 
 			String message = JSONObject.toJSONString(messageVO);
 			JSONObject obj = sendHttpsRequest(requestURL, HttpPost.METHOD_NAME, message);
-			System.out.println(obj.toString());
-			log.info("每天群发推送...");
+			if (!obj.getInteger("errcode").equals(ErrorCode.SUCCESS)) {
+				log.error("群发推送失败" + obj.getString("errmsg"));
+			}else{
+				log.debug("群发推送成功");
+			}
 		} else {
 			log.error("获取token失败");
 		}
@@ -194,8 +197,13 @@ public class WeiXinUtil {
 		return s;
 	}
 
-	public static String button_a1_key = "a1";
-	public static String button_a2_key = "a2";
+	public static String button_a1_1_key = "a1_1";
+	public static String button_a1_2_key = "a1_2";
+	public static String button_a1_3_key = "a1_3";
+	public static String button_a2_1_key = "a2_1";
+	public static String button_a2_2_key = "a2_2";
+	public static String button_a2_3_key = "a2_3";
+	public static String button_a2_4_key = "a2_4";
 	public static String button_a3_1_key = "a3_1";
 	public static String button_a3_2_key = "a3_2";
 
@@ -203,16 +211,51 @@ public class WeiXinUtil {
 
 		Menu menu = new Menu();
 
-		CommonButton a1 = new CommonButton();
+        //-----------------a1-----------------
+        ComplexButton a1 = new ComplexButton();
 		a1.setName("今日行情");
-		a1.setType(Button.BUTTON_TYPE_CLICK);
-		a1.setKey(button_a1_key);
 
-		CommonButton a2 = new CommonButton();
-		a2.setName("昨日数据");
-		a2.setType(Button.BUTTON_TYPE_CLICK);
-		a2.setKey(button_a2_key);
+        CommonButton a1_1 = new CommonButton();
+        a1_1.setName("实时信息");
+        a1_1.setType(Button.BUTTON_TYPE_CLICK);
+        a1_1.setKey(button_a1_1_key);
 
+        CommonButton a1_2 = new CommonButton();
+        a1_2.setName("股票分享");
+        a1_2.setType(Button.BUTTON_TYPE_CLICK);
+        a1_2.setKey(button_a1_2_key);
+
+        List<Button> a1List = new ArrayList<>();
+        a1List.add(a1_1);
+        a1List.add(a1_2);
+        a1.setSub_button(a1List);
+
+        //---------------a2----------------
+        ComplexButton a2 = new ComplexButton();
+		a2.setName("昨日复盘");
+
+        CommonButton a2_1 = new CommonButton();
+        a2_1.setName("成交量top10");
+        a2_1.setType(Button.BUTTON_TYPE_CLICK);
+        a2_1.setKey(button_a2_1_key);
+
+        CommonButton a2_2 = new CommonButton();
+        a2_2.setName("最高价top10");
+        a2_2.setType(Button.BUTTON_TYPE_CLICK);
+        a2_2.setKey(button_a2_2_key);
+
+        CommonButton a2_3 = new CommonButton();
+        a2_3.setName("涨幅top10");
+        a2_3.setType(Button.BUTTON_TYPE_CLICK);
+        a2_3.setKey(button_a2_3_key);
+
+        List<Button> a2List = new ArrayList<>();
+        a2List.add(a2_1);
+        a2List.add(a2_2);
+        a2List.add(a2_3);
+        a2.setSub_button(a2List);
+
+        //---------------a3----------------
 		ComplexButton a3 = new ComplexButton();
         a3.setName("我");
 
@@ -232,6 +275,7 @@ public class WeiXinUtil {
 
         a3.setSub_button(a3List);
 
+        //--------------------总--------------
         List<Button> menu_list = new ArrayList<>();
         menu_list.add(a1);
         menu_list.add(a2);
