@@ -44,4 +44,6 @@ public class CallSharesVO implements Serializable{
     public void setMsg_id(String msg_id) {
         this.msg_id = msg_id;
     }
+
 }
+

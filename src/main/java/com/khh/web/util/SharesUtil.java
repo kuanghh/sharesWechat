@@ -1,5 +1,6 @@
 package com.khh.web.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.khh.base.util.DateUtil;
 import com.khh.rpc.RPCUtil;
 import com.khh.rpc.SharesRPCClient;
@@ -10,6 +11,8 @@ import com.khh.web.enm.SharesParamEnum;
 import com.khh.web.service._interface.SpiderLogService;
 import com.khh.web.service._interface.UserAppointSpiderLogService;
 import com.khh.web.service._interface.UserService;
+import com.khh.web.vo.CallBackSharesVO;
+import com.khh.web.vo.CallSharesVO;
 import com.khh.web.vo.SharesInterface;
 import com.khh.web.vo.SharesVO;
 import org.slf4j.Logger;
@@ -59,7 +62,6 @@ public class SharesUtil {
             //看否是否调用成功
             if(RPCUtil.RPC_RESPONSE_STATE_SUCCESS.equals(response)) {//成功,调用群发接口，进行推送消息
 
-
                 //循环查看当天数据是否获取成功
                 TbSpiderLog spiderLog = null;
                 //检查频率为6分钟一次
@@ -104,22 +106,31 @@ public class SharesUtil {
 
     /**
      * 调用实时爬虫
-     * @param jsonData
-     * @param msgId
+     * @param vo
      * @throws Exception
      */
-    public static void runAppointSpider(String jsonData, String msgId) throws Exception{
+    public static String runAppointSpider(CallSharesVO vo, String shareName) throws Exception{
         SharesRPCClient client = new SharesRPCClient();
+
+        String jsonData = JSONObject.toJSONString(vo);
         String response = client.call(RPCUtil.RPC_QUEUE_NAME, jsonData);
 
+        String responseJson = vo.getShares_num() + "  " + shareName + ": \n";
         if(RPCUtil.RPC_RESPONSE_STATE_SUCCESS.equals(response)){//获取数据成功
             //由于是实时爬虫,所以python爬虫也没有调用新的线程去调用爬虫，所以是按顺序执行的
-            TbUserAppointSpiderLog po = userAppointSpiderLogService.findByMsgId(msgId);
+            TbUserAppointSpiderLog po = userAppointSpiderLogService.findByMsgId(vo.getMsg_id());
             if(po == null || po.getState() == SharesCommonUtil.APPOINT_SPIDER_LOG_STATE_FAILD){//调用失败
-                //todo...
+                log.error("调用爬虫失败,失败msgId：" + vo.getMsg_id());
+                return null;
+            }else{
+
+                String dataJson = po.getDataJson();
+                CallBackSharesVO callBackSharesVO = JSONObject.parseObject(dataJson, CallBackSharesVO.class);
+                responseJson += callBackSharesVO.toString();
+                log.info("调用实时爬虫成功");
             }
         }
-
+        return responseJson;
     }
 
     /**
@@ -128,12 +139,12 @@ public class SharesUtil {
      * @param key 关键字
      * @return
      */
-    public static String getTopString(List<SharesVO> list, SharesParamEnum key) throws Exception{
+    public static String getTopString(boolean isToday ,List<SharesVO> list, SharesParamEnum key) throws Exception{
 
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(isToday ? "今天":"昨日");
 
-        builder.append("今天<a href='javascript:void(0);'>")
+        builder.append("<a href='javascript:void(0);'>")
                 .append(key.getDesc())
                 .append("</a>top").append(list.size()).append("的股票有: \n");
 

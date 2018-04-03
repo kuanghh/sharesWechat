@@ -4,6 +4,8 @@ import com.khh.base.dao.BaseDao;
 import com.khh.web.domain.TbShares;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface TbSharesMapper extends BaseDao<TbShares> {
     int deleteByPrimaryKey(String id);
 
@@ -24,4 +26,5 @@ public interface TbSharesMapper extends BaseDao<TbShares> {
      * @throws Exception
      */
     TbShares findBySharesNum(@Param("sharesNum") String sharesNum) throws Exception;
+
 }

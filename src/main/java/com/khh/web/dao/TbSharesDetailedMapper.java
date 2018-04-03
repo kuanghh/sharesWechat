@@ -1,6 +1,7 @@
 package com.khh.web.dao;
 
 import com.khh.base.dao.BaseDao;
+import com.khh.web.domain.TbShares;
 import com.khh.web.domain.TbSharesDetailed;
 import com.khh.web.vo.SharesVO;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +28,6 @@ public interface TbSharesDetailedMapper extends BaseDao<TbSharesDetailed> {
      * @return
      */
     List<SharesVO> findTopSharesByKey(@Param("key") String key, @Param("today") String today, @Param("num") Integer num);
+
+
 }

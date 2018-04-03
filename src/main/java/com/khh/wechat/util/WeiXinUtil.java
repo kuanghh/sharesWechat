@@ -233,27 +233,33 @@ public class WeiXinUtil {
 
         //---------------a2----------------
         ComplexButton a2 = new ComplexButton();
-		a2.setName("昨日复盘");
+		a2.setName("复盘");
 
         CommonButton a2_1 = new CommonButton();
-        a2_1.setName("成交量top10");
+        a2_1.setName("昨日成交量top5");
         a2_1.setType(Button.BUTTON_TYPE_CLICK);
         a2_1.setKey(button_a2_1_key);
 
         CommonButton a2_2 = new CommonButton();
-        a2_2.setName("最高价top10");
+        a2_2.setName("昨日最高价top5");
         a2_2.setType(Button.BUTTON_TYPE_CLICK);
         a2_2.setKey(button_a2_2_key);
 
         CommonButton a2_3 = new CommonButton();
-        a2_3.setName("涨幅top10");
+        a2_3.setName("昨日涨幅top5");
         a2_3.setType(Button.BUTTON_TYPE_CLICK);
         a2_3.setKey(button_a2_3_key);
+
+        CommonButton a2_4 = new CommonButton();
+        a2_4.setName("详细查询");
+        a2_4.setType(Button.BUTTON_TYPE_CLICK);
+        a2_4.setKey(button_a2_4_key);
 
         List<Button> a2List = new ArrayList<>();
         a2List.add(a2_1);
         a2List.add(a2_2);
         a2List.add(a2_3);
+        a2List.add(a2_4);
         a2.setSub_button(a2List);
 
         //---------------a3----------------

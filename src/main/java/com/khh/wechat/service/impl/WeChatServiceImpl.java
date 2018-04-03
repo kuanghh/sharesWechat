@@ -6,10 +6,13 @@ import com.khh.base.util.DateUtil;
 import com.khh.web.dao.UserMapper;
 import com.khh.web.domain.TbShares;
 import com.khh.web.domain.User;
+import com.khh.web.enm.SharesParamEnum;
 import com.khh.web.service._interface.SharesService;
 import com.khh.web.service._interface.UserService;
+import com.khh.web.util.SharesUtil;
 import com.khh.web.util.UserUtil;
 import com.khh.web.vo.CallSharesVO;
+import com.khh.web.vo.SharesVO;
 import com.khh.wechat.exception.WechatExceptionEnum;
 import com.khh.wechat.service.WeChatService;
 import com.khh.wechat.util.MessageUtil;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -78,7 +82,7 @@ public class WeChatServiceImpl implements WeChatService {
         TextMessage textMessage = new TextMessage(message);
 
 
-        String content = message.getKey("content").toString(); //用户发的消息
+        String content = message.getKey("Content").toString(); //用户发的消息
         String responseContent = "闭嘴!!!!!";
 
         if(content.indexOf("#") == 0){
@@ -110,7 +114,10 @@ public class WeChatServiceImpl implements WeChatService {
             vo.setMsg_id(message.getMsgId());
             vo.setShares_num(shares.getSharesNum());
 
-            String jsonStr = JSONObject.toJSONString(vo);
+            response = SharesUtil.runAppointSpider(vo, shares.getSharesName());
+            if(response == null || response.trim().length() == 0){
+                response = "系统繁忙!!..";
+            }
 
         }
         return response;
@@ -207,8 +214,62 @@ public class WeChatServiceImpl implements WeChatService {
 
         }else if(WeiXinUtil.button_a1_1_key.equals(button_key)){// 实时股票信息
             baseMessage = handleRealTimeSharesEvent(message);
+
+        }else if(WeiXinUtil.button_a2_1_key.equals(button_key)){//成交量top5
+            baseMessage = handleVolumeTop5Event(message);
+
+        }else if(WeiXinUtil.button_a2_2_key.equals(button_key)){//最高价top5
+            baseMessage = handleHighPriceTop5Event(message);
+
+        }else if(WeiXinUtil.button_a2_3_key.equals(button_key)){//涨幅top5
+            baseMessage = handleRangeTop5Event(message);
         }
         return MessageUtil.baseMessageToXml(baseMessage);
+    }
+
+    /**
+     * 处理获取昨日成交量top5的数据
+     * @param message
+     * @return
+     */
+    private BaseMessage handleVolumeTop5Event(BaseRequestMessage message) throws Exception{
+        TextMessage textMessage = new TextMessage(message);
+
+        List<SharesVO> shareVOList = sharesService.findTop5SharesByField(SharesParamEnum.volume.getField());
+        String topString = SharesUtil.getTopString(false, shareVOList, SharesParamEnum.volume);
+        textMessage.setContent(topString);
+
+        return textMessage;
+    }
+
+    /**
+     * 处理获取昨日最高价top5的数据
+     * @param message
+     * @return
+     */
+    private BaseMessage handleHighPriceTop5Event(BaseRequestMessage message) throws Exception{
+        TextMessage textMessage = new TextMessage(message);
+
+        List<SharesVO> shareVOList = sharesService.findTop5SharesByField(SharesParamEnum.ceilling_price.getField());
+        String topString = SharesUtil.getTopString(false, shareVOList, SharesParamEnum.ceilling_price);
+        textMessage.setContent(topString);
+
+        return textMessage;
+    }
+
+    /**
+     * 处理获取昨日最高价top5的数据
+     * @param message
+     * @return
+     */
+    private BaseMessage handleRangeTop5Event(BaseRequestMessage message) throws Exception{
+        TextMessage textMessage = new TextMessage(message);
+
+        List<SharesVO> shareVOList = sharesService.findTop5SharesByField(SharesParamEnum.rise_and_fall_range.getField());
+        String topString = SharesUtil.getTopString(false, shareVOList, SharesParamEnum.rise_and_fall_range);
+        textMessage.setContent(topString);
+
+        return textMessage;
     }
 
     /**

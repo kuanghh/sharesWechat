@@ -1,6 +1,7 @@
 package com.khh.base.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -21,5 +22,14 @@ public class DateUtil {
     public static String getToday() throws Exception{
         return dateToString(new Date(), "yyyy-MM-dd");
 
+    }
+
+    public static String getYesterday() throws Exception{
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,   -1);
+        String yesterday = dateToString(cal.getTime(), "yyyy-MM-dd");
+        System.out.println(yesterday);
+
+        return yesterday;
     }
 }

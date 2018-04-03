@@ -74,11 +74,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(SharesUtil.getTopString(pERatioTop, SharesParamEnum.p_e_ratio));
+        builder.append(SharesUtil.getTopString(true, pERatioTop, SharesParamEnum.p_e_ratio));
         builder.append("\n");
-        builder.append(SharesUtil.getTopString(volumeTop, SharesParamEnum.volume));
+        builder.append(SharesUtil.getTopString(true, volumeTop, SharesParamEnum.volume));
         builder.append("\n");
-        builder.append(SharesUtil.getTopString(priceTop, SharesParamEnum.ceilling_price));
+        builder.append(SharesUtil.getTopString(true, priceTop, SharesParamEnum.ceilling_price));
         builder.append("\n");
 
         vo.setMsgtype(MessageUtil.RESP_MESSAGE_TYPE_TEXT);

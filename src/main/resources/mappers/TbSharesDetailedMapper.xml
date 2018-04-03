@@ -255,4 +255,5 @@
       where d.create_time = #{today} and d.shares_id = s.id
       ORDER BY d.${key} DESC limit ${num}
   </select>
+
 </mapper>
