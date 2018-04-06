@@ -27,18 +27,18 @@ public class CallBackSharesVO implements Serializable{
 
     @Override
     public String toString() {
-        return "当前价格 :'" + price + "\n" + 
-                "涨跌幅:" + rise_and_fall_quota + "\n" +
-                "涨跌额:" + rise_and_fall_range + "\n" +
-                "最高价:" + height + "\n" +
-                "最低价:" + low + "\n" +
-                "开盘价:" + today_open + "\n" +
-                "收盘价:" + yesterday_close + "\n" +
-                "成交量:" + volumn + "\n" +
-                "成交额:" + turn_volume + "\n" +
-                "换手率:" + turnover_rate + "\n" +
-                "振  幅:" + amplitude + "\n" +
-                "市盈率(MRQ):" + p_e_ratio + "\n" ;
+        return "当前价格 :" + price + "\n" +
+                "涨跌幅 :" + rise_and_fall_quota + "\n" +
+                "涨跌额 :" + rise_and_fall_range + "\n" +
+                "最高价 :" + height + "\n" +
+                "最低价 :" + low + "\n" +
+                "开盘价 :" + today_open + "\n" +
+                "收盘价 :" + yesterday_close + "\n" +
+                "成交量 :" + volumn + "\n" +
+                "成交额 :" + turn_volume + "\n" +
+                "换手率 :" + turnover_rate + "\n" +
+                "振  幅 :" + amplitude + "\n" +
+                "市盈率(MRQ) :" + p_e_ratio + "\n" ;
     }
 
     public String getPrice() {

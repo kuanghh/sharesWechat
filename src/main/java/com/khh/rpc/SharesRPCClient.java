@@ -39,7 +39,7 @@ public class SharesRPCClient {
 
     public String call(String queueName, String message) throws Exception{
         //配置 corrID，来作为关联的唯一凭证
-        String corrId = UUID.randomUUID().toString();
+        final String corrId = UUID.randomUUID().toString();
         AMQP.BasicProperties props = new AMQP.BasicProperties
                 .Builder()
                 .correlationId(corrId)
@@ -60,7 +60,6 @@ public class SharesRPCClient {
             }
         });
 
-        close();//关闭
         return response.take();
     }
 

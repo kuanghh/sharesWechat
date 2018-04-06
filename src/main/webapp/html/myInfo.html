@@ -40,16 +40,19 @@
 		<div class="pd10">
 			<img class="logo_img" src="images/logo.jpg" />
 			<form id="submit_form" method="post" action="">
+				<div>
+					<div><span style="color:red;">以下是您的信息:</span></div>
+				</div>
 				<div class="login_b_i">
 					<div class="login_input">
-						<div class="login_user"><input class="info check" type="text" name="account" placeholder="帐号(6-10个字母，数字组合)" /></div>
+						<div class="login_user"><input class="info check" type="text" name="account" placeholder="帐号" /></div>
 						<div class="login_user"><input class="info" type="text" name="name" placeholder="姓名" /></div>
 						<div class="login_user"><input class="info" type="password" name="password" placeholder="密码" /></div>
 						<div class="login_user"><input class="info check" type="text" name="phone" placeholder="手机号码" /></div>
 						<div class="login_user"><input class="info check" type="text" name="email" placeholder="邮箱" /></div>
 					</div>
 				</div>
-				<a class="login_submit">注册</a>
+				<a class="login_submit">保存</a>
 			</form>
 
 		</div>
@@ -62,12 +65,55 @@
 	var can_submit = false;
 
     $(function () {
+		//用户openId
+		var openId = GetQueryString("openId");
+		var account;
+		var name;
+		var password;
+		var phone;
+		var email;
+
+
+
+		//回显信息
+		$.ajax({
+			url : server_project + "/user/ajaxFind.action",
+			data : {"openId":openId},
+			type : "POST",
+			dataType: "json",
+			success : function (backData) {
+				if(backData.code == 5000){
+					alert(backData.message);
+
+					window.setTimeout(closeThisWindow, 3000);
+				}else if(backData.code == 2000){
+					var user = backData.data.user;
+					$("input[name='account']").val(user.account);
+					$("input[name='name']").val(user.name);
+					$("input[name='password']").val(user.password);
+					$("input[name='phone']").val(user.phone);
+					$("input[name='email']").val(user.email);
+					account = user.account;
+					name = user.name;
+					password = user.password;
+					phone = user.phone;
+					email = user.email;
+				}
+			}
+		});
+
+
         $(".check").blur(function () {
 
 			var url = server_project + "/user/checkInfo.action";
 
 			var key = $(this).attr("name");
 			var value = $(this).val();
+
+			//下面代码是为了防止当前自己的数据去请求服务器查重，但这样做是不对的，可以通过map的形式装载name与value的值，再和当前值做比较
+			if (value == account || value == name || value == password || value == phone || value == email) {
+				return;
+			}
 
 			$.ajax({
 				url : url,
@@ -88,12 +134,12 @@
 
 
         $(".login_submit").click(function () {
-			var url = server_project + "/user/register.action";
+			var url = server_project + "/user/update.action";
 
 			var isValid = true;
 
 			//获取url中的openId
-			var openId = GetQueryString("openId");
+
 			if(isStringEmpty(openId)){
 				alert("openId不存在");
 				isValid = false;
@@ -133,10 +179,7 @@
 					success : function (data) {
 						alert(data.message);
 						if(data.code == 2000){
-							// 关闭当前窗口
-							window.opener=null;
-							window.open('','_self');
-							window.close();
+							closeThisWindow();
 						}
 					}
 

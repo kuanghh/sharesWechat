@@ -100,6 +100,7 @@ public class SharesUtil {
             e.printStackTrace();
         }finally {
             log.debug("今天的定期爬虫任务结束...");
+            client.close();
         }
     }
 
@@ -130,6 +131,7 @@ public class SharesUtil {
                 log.info("调用实时爬虫成功");
             }
         }
+        client.close();
         return responseJson;
     }
 

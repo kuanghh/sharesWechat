@@ -67,6 +67,33 @@ public class UserController extends BaseController{
     }
 
     @ResponseBody
+    @RequestMapping(value = "/update", method = RequestMethod.POST,consumes = "application/json")
+    public ResponseBean update(@Valid @RequestBody UserRegisterVO userVO, BindingResult result) throws Exception{
+        ResponseBean responseBean = new ResponseBean();
+
+        //信息验证
+        if(result.hasErrors()){
+            responseBean.setErrorResponse(result.getFieldError().getDefaultMessage());
+            return responseBean;
+        }
+
+        User user = userService.findByOpenId(userVO.getOpenId());
+        if(user == null || user.getIsBinding().equals(UserUtil.USER_BINGDING_UNREGISTER)){
+
+            responseBean.setErrorResponse("当前微信账号尚未注册");
+            return responseBean;
+        }else{
+
+            User u = UserUtil.assembleUserPO(userVO);
+            u.setId(user.getId());
+            userService.updatePO(u,false);
+        }
+
+        responseBean.setSuccessResponse("修改成功");
+        return responseBean;
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/checkInfo", method = RequestMethod.POST)
     public ResponseBean ajaxCheckExistInfo(@RequestParam("key")String key,@RequestParam("value")String value) throws Exception{
         ResponseBean responseBean = new ResponseBean();
@@ -90,5 +117,23 @@ public class UserController extends BaseController{
         responseBean.setSuccessResponse("可以使用");
         return responseBean;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/ajaxFind", method = RequestMethod.POST)
+    public ResponseBean ajaxFindUserByOpenId(@RequestParam("openId")String openId) throws Exception{
+        ResponseBean responseBean = new ResponseBean();
+
+        User user = userService.findByOpenId(openId);
+        if(user != null){
+            responseBean.setData("user",user);
+        }else{
+            responseBean.setErrorResponse("无当前用户信息");
+            return responseBean;
+        }
+
+        responseBean.setSuccessResponse("查询成功");
+        return responseBean;
+    }
+
 
 }

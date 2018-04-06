@@ -5,9 +5,11 @@ import com.khh.base.common.Const;
 import com.khh.base.util.DateUtil;
 import com.khh.web.dao.UserMapper;
 import com.khh.web.domain.TbShares;
+import com.khh.web.domain.TbUserAppointSpiderLog;
 import com.khh.web.domain.User;
 import com.khh.web.enm.SharesParamEnum;
 import com.khh.web.service._interface.SharesService;
+import com.khh.web.service._interface.UserAppointSpiderLogService;
 import com.khh.web.service._interface.UserService;
 import com.khh.web.util.SharesUtil;
 import com.khh.web.util.UserUtil;
@@ -15,6 +17,7 @@ import com.khh.web.vo.CallSharesVO;
 import com.khh.web.vo.SharesVO;
 import com.khh.wechat.exception.WechatExceptionEnum;
 import com.khh.wechat.service.WeChatService;
+import com.khh.wechat.util.CashUtil;
 import com.khh.wechat.util.MessageUtil;
 import com.khh.wechat.util.WeiXinUtil;
 import com.khh.wechat.vo.message.request.BaseRequestMessage;
@@ -44,13 +47,23 @@ public class WeChatServiceImpl implements WeChatService {
     @Resource(name = "sharesService")
     private SharesService sharesService;
 
+    @Resource(name = "userAppointSpiderLogService")
+    private UserAppointSpiderLogService userAppointSpiderLogService;
+
     public String processReq(BaseRequestMessage message) throws Exception {
 
         String msgType = message.getMsgType();
-
+        String msgId = message.getMsgId();
         String sendMessage = "";
 
-        //todo 到时候使用redis 将 msgID缓存起来，方便去重
+        //todo 可使用redis 将 msgID缓存起来，方便去重
+
+        Object value = CashUtil.cashMap.get(msgId);
+        if(value != null){
+            System.out.println("检查到有msgId");
+            return value.toString();
+        }
+
 
         if (MessageUtil.REQ_MESSAGE_TYPE_TEXT.equals(msgType)) { //文本消息
             sendMessage = handleTextTypeMessage(message);
@@ -89,7 +102,9 @@ public class WeChatServiceImpl implements WeChatService {
             responseContent = callApppointSharesMethod(message, content.substring(1,content.length()));
         }
         textMessage.setContent(responseContent);
-        return MessageUtil.textMessageToXml(textMessage);
+        String xmlMessageStr = MessageUtil.textMessageToXml(textMessage);
+        CashUtil.cashMap.put(message.getMsgId(), xmlMessageStr);
+        return xmlMessageStr;
     }
 
     /**
@@ -206,11 +221,10 @@ public class WeChatServiceImpl implements WeChatService {
         }
 
         if(WeiXinUtil.button_a3_1_key.equals(button_key)){//绑定注册
-
             baseMessage = handleRegisterEvent(message);
 
         }else if(WeiXinUtil.button_a3_2_key.equals(button_key)){// 我的信息
-            //todo ...
+            baseMessage = handleMyInfoEvent(message);
 
         }else if(WeiXinUtil.button_a1_1_key.equals(button_key)){// 实时股票信息
             baseMessage = handleRealTimeSharesEvent(message);
@@ -225,6 +239,32 @@ public class WeChatServiceImpl implements WeChatService {
             baseMessage = handleRangeTop5Event(message);
         }
         return MessageUtil.baseMessageToXml(baseMessage);
+    }
+
+
+    /**
+     * 回显自己信息的页面
+     * @param message
+     * @return
+     */
+    private BaseMessage handleMyInfoEvent(BaseRequestMessage message) throws Exception{
+        TextMessage textMessage = new TextMessage(message);
+        //查询openId，看是否有此人记录
+        String openId = message.getFromUserName();
+
+        User user = userService.findByOpenId(openId);
+
+        String response = "";
+        //如果用户不存在，则提示用户尚未注册
+        if(user == null || UserUtil.USER_BINGDING_UNREGISTER.equals(user.getIsBinding())){
+            response += "亲,请先完成注册，在进行下一步操作吧..";
+        }else{
+//            String url = Const.server_project_url + "/html/myInfo.html?openId=" + openId;
+            String url = Const.project_loc_localhost + "/html/myInfo.html?openId=" + openId;
+            response += "请点击<a href='"+url+"'>这里</a>，查看我的信息吧..";
+        }
+        textMessage.setContent(response);
+        return textMessage;
     }
 
     /**

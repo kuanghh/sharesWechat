@@ -4,7 +4,7 @@
 
 var localhost_project = "http://localhost/sharesWechat";
 
-var server_ip = "ba669d3b.ngrok.io";
+var server_ip = "1594b8d4.ngrok.io";
 
 var server_project = "http://" + server_ip + "/sharesWechat";
 
@@ -39,4 +39,11 @@ function jsonArr2JsArr (jsonArr) {
     var  jsonStr= jsonArr.substring(1,jsonArr.length-1);
     var jsonArr= jsonStr.split(",");
     return jsonArr;
+}
+
+function closeThisWindow(){
+    // 关闭当前窗口
+    window.opener=null;
+    window.open('','_self');
+    window.close();
 }

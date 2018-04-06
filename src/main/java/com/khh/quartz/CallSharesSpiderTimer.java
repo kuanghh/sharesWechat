@@ -1,6 +1,7 @@
 package com.khh.quartz;
 
 import com.khh.thread.SharesThread;
+import com.khh.wechat.util.CashUtil;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,15 @@ public class CallSharesSpiderTimer {
             i++;
         }
 
+    }
+
+    /**
+     * 一个小时清除一次缓存
+     * @throws Exception
+     */
+    @Scheduled(cron = "0 0/60 * ? * *")
+    public void clearCashMap() throws Exception{
+        CashUtil.cashMap.clear();
     }
 
 
