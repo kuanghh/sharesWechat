@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <style>
+    blockquote, h1, h2, h3, h4, h5, h6, p {
+        margin: 0;
+        padding: 0
+    }
+
+    body {
+        font-family: "Microsoft YaHei", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+        font-size: 13px;
+        line-height: 18px;
+        color: #737373;
+        background-color: #fff;
+        margin: 10px 13px 10px 13px
+    }
+
+    table {
+        margin: 10px 0 15px 0;
+        border-collapse: collapse
+    }
+
+    td, th {
+        border: 1px solid #ddd;
+        padding: 3px 10px
+    }
+
+    th {
+        padding: 5px 10px
+    }
+
+    a {
+        color: #0069d6
+    }
+
+    a:hover {
+        color: #0050a3;
+        text-decoration: none
+    }
+
+    a img {
+        border: none
+    }
+
+    p {
+        margin-bottom: 13px;
+        font-family: "Microsoft YaHei"
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #404040;
+        line-height: 36px
+    }
+
+    h1 {
+        margin-bottom: 18px;
+        font-size: 30px
+    }
+
+    h2 {
+        font-size: 24px
+    }
+
+    h3 {
+        font-size: 18px
+    }
+
+    h4 {
+        font-size: 16px
+    }
+
+    h5 {
+        font-size: 14px
+    }
+
+    h6 {
+        font-size: 13px
+    }
+
+    hr {
+        margin: 0 0 19px;
+        border: 0;
+        border-bottom: 1px solid #ccc
+    }
+
+    blockquote {
+        padding: 13px 13px 21px 15px;
+        margin-bottom: 18px;
+        font-family: georgia, serif;
+        font-style: italic
+    }
+
+    blockquote:before {
+        content: "\201C";
+        font-size: 40px;
+        margin-left: -10px;
+        font-family: georgia, serif;
+        color: #eee
+    }
+
+    blockquote p {
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 18px;
+        margin-bottom: 0;
+        font-style: italic
+    }
+
+    code, pre {
+        font-family: Monaco, Andale Mono, Courier New, monospace
+    }
+
+    code {
+        background-color: #fee9cc;
+        color: rgba(0, 0, 0, .75);
+        padding: 1px 3px;
+        font-size: 12px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px
+    }
+
+    pre {
+        display: block;
+        padding: 14px;
+        margin: 0 0 18px;
+        line-height: 16px;
+        font-size: 11px;
+        border: 1px solid #d9d9d9;
+        white-space: pre-wrap;
+        word-wrap: break-word
+    }
+
+    pre code {
+        background-color: #fff;
+        color: #737373;
+        font-size: 11px;
+        padding: 0
+    }
+
+    sup {
+        font-size: .83em;
+        vertical-align: super;
+        line-height: 0
+    }
+
+    * {
+        -webkit-print-color-adjust: exact
+    }
+
+    @media screen and (min-width: 914px) {
+        body {
+            width: 854px;
+            margin: 10px auto
+        }
+    }
+
+    @media print {
+        body, code, h1, h2, h3, h4, h5, h6, pre code {
+            color: #000
+        }
+
+        pre, table {
+            page-break-inside: avoid
+        }
+    }</style>
+    <title>股票详情查询</title>
+</head>
+
+<script type="text/javascript" src="../common/common.js"></script>
+<script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../js/datepicker/WdatePicker.js"></script>
+
+<body>
+
+<h2>股票详情查询</h2>
+<hr>
+<p>欢迎使用股票历史查询</p>
+<p>通过该页面，你可以详细查询出某只股票在某段时间内的数据</p>
+
+<div>
+    <div class="sharesNumDiv">
+        <span style="color: #0069d6">股票代码:</span> <!--蓝色-->
+        <input style="margin-left: 5px" type="text" name="sharesNum" id="sharesNum" />
+
+    </div>
+    <br/>
+    <div class="startTimeDiv">
+        <span style="color: #0069d6">开始时间:</span> <!--蓝色-->
+        <input  name="startTime" id="birthday" class="ipt" readonly="readonly" style="margin-left: 5px"
+                onfocus="WdatePicker({skin:'whyGreen', el:'birthday',dateFmt:'yyyy-MM-dd'})"  required />
+    </div>
+    <br/>
+    <div class="endTimeDiv">
+        <span style="color: #0069d6">结束时间:</span> <!--蓝色-->
+        <input  name="startTime" id="endTime" class="ipt" readonly="readonly" style="margin-left: 5px"
+                onfocus="WdatePicker({skin:'whyGreen', el:'endTime',dateFmt:'yyyy-MM-dd'})"  required />
+    </div>
+    <br/>
+    <div class="findButtonDiv">
+        <input style="margin-left: 50px;" type="button" value="查询" class="ajaxFind" />
+        <input style="margin-left: 50px;" type="button" value="清空" class="clearAll" />
+    </div>
+    <br/>
+    <hr/>
+    <div class="resultDiv" style="margin-top: 10px;margin-left: 10px;">
+
+        <div class="resultTableDiv" style="display: none">
+            <span style="margin-left: 5px">股票名称 :</span> <span class="sharesName" style="margin-left: 5px"></span>
+            <br/>
+            <table class="resultTable" style="margin-top:5px;margin-left: 5px;align-content: center;border: solid black 1px">
+
+                <thead>
+                    <tr>
+                        <td>序号</td>
+                        <td>日期</td>
+                        <td>开盘价</td>
+                        <td>收盘价</td>
+                        <td>最高价</td>
+                        <td>最低价</td>
+                        <td>涨跌幅(%)</td>
+                        <td>成交额(万)</td>
+                        <td>换手率(%) </td>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        //获取当前openId
+        var openId = GetQueryString("openId");
+
+        $(".ajaxFind").click(function () {
+
+            var sharesNum = $("#sharesNum").val();
+            var startTime = $("#birthday").val();
+            var endTime = $("#endTime").val();
+
+            var url = server_project + "/shares/findInTimeZone.action";
+            var data = {"sharesNum":sharesNum, "startTime":startTime, "endTime":endTime,"openId":openId};
+
+            $.ajax({
+                url : url,
+                data : data,
+                type : "POST",
+                dataType: "json",
+                success : function (backData) {
+                    if(backData.code == 5000){
+                        alert(backData.message);
+                        window.setTimeout(closeThisWindow, 3000);
+
+                    }else if(backData.code == 2000){
+                        $(".resultTableDiv").css("display","block");
+
+                        var resultBody = $("#resultBody");
+
+                        //获取list
+                        var list = backData.data.list;
+
+                        $(".sharesName").text(list[0].sharesName);
+                        for(var i = 0; i < list.length;i++){
+
+                            var $tr = $("<tr></tr>");
+
+                            var $td_no = $("<td>" + (i+1) +"</td>")
+                            var $td1= $("<td>"+ strToDate(list[i].createTime) +"</td>");
+                            var $td2 = $("<td>"+ list[i].openPrice +"</td>");
+                            var $td3= $("<td>"+ list[i].closePrice +"</td>");
+                            var $td4= $("<td>"+ list[i].ceillingPrice +"</td>");
+                            var $td5= $("<td>"+ list[i].floorPrice +"</td>");
+                            var $td6= $("<td>"+ list[i].riseAndFallRange +"</td>");
+                            var $td7= $("<td>"+ list[i].turnVolume +"</td>");
+                            var $td8= $("<td>"+ list[i].turnoverRate +"</td>");
+
+                            $tr.append($td_no);
+                            $tr.append($td1);
+                            $tr.append($td2);
+                            $tr.append($td3);
+                            $tr.append($td4);
+                            $tr.append($td5);
+                            $tr.append($td6);
+                            $tr.append($td7);
+                            $tr.append($td8);
+                            resultBody.append($tr);
+                        }
+                    }
+                }
+
+            })
+
+        })
+
+    })
+
+</script>
+
+</html>

@@ -40,6 +40,10 @@
 
   </resultMap>
 
+  <resultMap id="SharesDetailVOResultMap" type="com.khh.web.vo.SharesDetailVO" extends="ShareVOResultMap">
+    <id column="shares_id" property="sharesId" jdbcType="VARCHAR" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, shares_id, create_time, open_price, close_price, ceilling_price, floor_price, 
     rise_and_fall_range, rise_and_fall_quota, volume, turn_volume, turnover_rate, amplitude, 
@@ -254,6 +258,33 @@
       from tb_shares_detailed d, tb_shares s
       where d.create_time = #{today} and d.shares_id = s.id
       ORDER BY d.${key} DESC limit ${num}
+  </select>
+
+  <select id="findDetailInTimeZone" parameterType="java.lang.String" resultMap="SharesDetailVOResultMap">
+    select
+        s.id as shares_id,
+        s.shares_num as shares_num,
+        s.shares_href as shares_href ,
+        s.shares_name as shares_name,
+        d.create_time as create_time,
+        d.open_price  as open_price,
+        d.close_price as close_price,
+        d.ceilling_price as ceilling_price,
+        d.floor_price as floor_price,
+        d.rise_and_fall_range as rise_and_fall_range,
+        d.rise_and_fall_quota as rise_and_fall_quota,
+        d.volume as volume,
+        d.turn_volume as turn_volume,
+        d.turnover_rate as turnover_rate,
+        d.amplitude as amplitude,
+        d.p_e_ratio as p_e_ratio
+      from tb_shares_detailed d, tb_shares s
+      where
+          d.create_time between #{startTime} and #{endTime}
+          and s.shares_num = #{sharesNum}
+          and d.shares_id = s.id
+          ORDER BY d.create_time DESC
+
   </select>
 
 </mapper>

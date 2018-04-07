@@ -55,7 +55,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public void sendSharesMessageToAllUser() throws Exception {
         MassMessageVO vo = new MassMessageVO();
 
-        String today = DateUtil.getToday();
+        String today = DateUtil.getToday(DateUtil.DATE_PATTERN_DAY);
 //        String today = "2018-03-19";
 
         //将所有注册过的用户的OpenId获取出来

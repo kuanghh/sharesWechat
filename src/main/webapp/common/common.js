@@ -4,7 +4,7 @@
 
 var localhost_project = "http://localhost/sharesWechat";
 
-var server_ip = "1594b8d4.ngrok.io";
+var server_ip = "425148e0.ngrok.io";
 
 var server_project = "http://" + server_ip + "/sharesWechat";
 

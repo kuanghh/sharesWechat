@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.khh.base.util.DateUtil;
 import com.khh.rpc.RPCUtil;
 import com.khh.rpc.SharesRPCClient;
-import com.khh.web.domain.TbSharesDetailed;
 import com.khh.web.domain.TbSpiderLog;
 import com.khh.web.domain.TbUserAppointSpiderLog;
 import com.khh.web.enm.SharesParamEnum;
@@ -91,7 +90,7 @@ public class SharesUtil {
                 userService.sendSharesMessageToAllUser();
             }else{
                 //失败的话,尚未考虑
-                log.error(DateUtil.getToday() + "定时爬虫调用失败");
+                log.error(DateUtil.getToday(DateUtil.DATE_PATTERN_DAY) + "定时爬虫调用失败");
                 return;
             }
 

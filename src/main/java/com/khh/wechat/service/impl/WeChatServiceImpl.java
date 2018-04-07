@@ -237,8 +237,38 @@ public class WeChatServiceImpl implements WeChatService {
 
         }else if(WeiXinUtil.button_a2_3_key.equals(button_key)){//涨幅top5
             baseMessage = handleRangeTop5Event(message);
+
+        }else if(WeiXinUtil.button_a2_4_key.equals(button_key)){//详细查询
+            baseMessage = handleHistoryDetailEvent(message);
         }
         return MessageUtil.baseMessageToXml(baseMessage);
+    }
+
+    /**
+     * 跳进详细查询页面
+     * @param message
+     * @return
+     */
+    private BaseMessage handleHistoryDetailEvent(BaseRequestMessage message) throws Exception{
+
+        TextMessage textMessage = new TextMessage(message);
+        //查询openId，看是否有此人记录
+        String openId = message.getFromUserName();
+
+        User user = userService.findByOpenId(openId);
+
+        String response = "";
+        //如果用户不存在，则提示用户尚未注册
+        if(user == null || UserUtil.USER_BINGDING_UNREGISTER.equals(user.getIsBinding())){
+            response += "亲,请先完成注册，再进行下一步操作吧..";
+        }else{
+//            String url = Const.server_project_url + "/html/myInfo.html?openId=" + openId;
+            String url = Const.project_loc_localhost + "/html/detail.html?openId=" + openId;
+            response += "请点击<a href='"+url+"'>这里</a>，进入详细查询页面..";
+        }
+
+        textMessage.setContent(response);
+        return textMessage;
     }
 
 
@@ -257,7 +287,7 @@ public class WeChatServiceImpl implements WeChatService {
         String response = "";
         //如果用户不存在，则提示用户尚未注册
         if(user == null || UserUtil.USER_BINGDING_UNREGISTER.equals(user.getIsBinding())){
-            response += "亲,请先完成注册，在进行下一步操作吧..";
+            response += "亲,请先完成注册，再进行下一步操作吧..";
         }else{
 //            String url = Const.server_project_url + "/html/myInfo.html?openId=" + openId;
             String url = Const.project_loc_localhost + "/html/myInfo.html?openId=" + openId;
@@ -320,7 +350,7 @@ public class WeChatServiceImpl implements WeChatService {
     private BaseMessage handleRealTimeSharesEvent(BaseRequestMessage message) throws Exception{
         TextMessage textMessage = new TextMessage(message);
 
-        String text = "请以<a href='javascript:void(0)'>'#+股票代码'</a>输入代码获取实时数据信息(例如:#603899)";
+        String text = "请以<a>'#+股票代码'</a>输入代码获取实时数据信息(例如:#603899)";
         textMessage.setContent(text);
 
         return textMessage;
