@@ -56,29 +56,28 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         MassMessageVO vo = new MassMessageVO();
 
         String today = DateUtil.getToday(DateUtil.DATE_PATTERN_DAY);
-//        String today = "2018-03-19";
 
         //将所有注册过的用户的OpenId获取出来
         List<String> opIdList = userMapper.findAllValidOpenId();
 
         if(opIdList == null || opIdList.size() <= 1) return; //没有用户就不操作了,如果用户只有一个，也会出错
 
-        //获取市盈率top10
-        List<SharesVO> pERatioTop = sharesDetailedMapper.findTopSharesByKey(SharesParamEnum.p_e_ratio.getField(), today,5);
-
-        //获取交易量top10
+        //获取交易量top5
         List<SharesVO> volumeTop = sharesDetailedMapper.findTopSharesByKey(SharesParamEnum.volume.getField(), today,5);
 
-        //获取最高价的top10
+        //获取最高价的top5
         List<SharesVO> priceTop = sharesDetailedMapper.findTopSharesByKey(SharesParamEnum.ceilling_price.getField(), today,5);
+
+        //获取换手率top5
+        List<SharesVO> pERatioTop = sharesDetailedMapper.findTopSharesByKey(SharesParamEnum.turnover_rate.getField(), today,5);
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(SharesUtil.getTopString(true, pERatioTop, SharesParamEnum.p_e_ratio));
+        builder.append(SharesUtil.getTopString(true, priceTop, SharesParamEnum.ceilling_price));
         builder.append("\n");
         builder.append(SharesUtil.getTopString(true, volumeTop, SharesParamEnum.volume));
         builder.append("\n");
-        builder.append(SharesUtil.getTopString(true, priceTop, SharesParamEnum.ceilling_price));
+        builder.append(SharesUtil.getTopString(true, pERatioTop, SharesParamEnum.turnover_rate));
         builder.append("\n");
 
         vo.setMsgtype(MessageUtil.RESP_MESSAGE_TYPE_TEXT);

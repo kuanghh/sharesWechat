@@ -6,7 +6,9 @@ var localhost_project = "http://localhost/sharesWechat";
 
 var server_ip = "1d4889ba.ngrok.io";
 
-var server_project = "http://" + server_ip + "/sharesWechat";
+var real_server_ip = "119.23.246.169";
+
+var server_project = "http://" + real_server_ip + "/sharesWechat";
 
 function isStringEmpty(str) {
     if(str == null || str.trim().length==0){
