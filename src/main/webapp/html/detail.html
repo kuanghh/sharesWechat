@@ -266,7 +266,7 @@
                         $(".resultTableDiv").css("display","block");
 
                         var resultBody = $("#resultBody");
-
+                        resultBody.empty();//先清除所有子元素
                         //获取list
                         var list = backData.data.list;
 
@@ -277,13 +277,13 @@
 
                             var $td_no = $("<td>" + (i+1) +"</td>")
                             var $td1= $("<td>"+ strToDate(list[i].createTime) +"</td>");
-                            var $td2 = $("<td>"+ list[i].openPrice +"</td>");
-                            var $td3= $("<td>"+ list[i].closePrice +"</td>");
-                            var $td4= $("<td>"+ list[i].ceillingPrice +"</td>");
-                            var $td5= $("<td>"+ list[i].floorPrice +"</td>");
-                            var $td6= $("<td>"+ list[i].riseAndFallRange +"</td>");
+                            var $td2 = $("<td>"+ strLongToFloat(list[i].openPrice) +"</td>");
+                            var $td3= $("<td>"+ strLongToFloat(list[i].closePrice) +"</td>");
+                            var $td4= $("<td>"+ strLongToFloat(list[i].ceillingPrice) +"</td>");
+                            var $td5= $("<td>"+ strLongToFloat(list[i].floorPrice) +"</td>");
+                            var $td6= $("<td>"+ strLongToFloat(list[i].riseAndFallRange) +"</td>");
                             var $td7= $("<td>"+ list[i].turnVolume +"</td>");
-                            var $td8= $("<td>"+ list[i].turnoverRate +"</td>");
+                            var $td8= $("<td>"+ strLongToFloat(list[i].turnoverRate) +"</td>");
 
                             $tr.append($td_no);
                             $tr.append($td1);
@@ -303,6 +303,13 @@
 
         })
 
+
+        $(".clearAll").click(function () {
+
+            $("#sharesNum").val('');
+            $("#birthday").val('');
+            $("#endTime").val('');
+        })
     })
 
 </script>

@@ -82,7 +82,13 @@
     <servlet-name>dispatcherServlet</servlet-name>
     <url-pattern>*.action</url-pattern>
   </servlet-mapping>
-
+  <!--
+      这里要声明一下sockJS的路径问题，因为sockJS后面不能带有后缀，所以另起一个匹配模式给sockJS
+    -->
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>/sockJS/*</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>DruidStatView</servlet-name>

@@ -240,8 +240,39 @@ public class WeChatServiceImpl implements WeChatService {
 
         }else if(WeiXinUtil.button_a2_4_key.equals(button_key)){//详细查询
             baseMessage = handleHistoryDetailEvent(message);
+
+        }else if(WeiXinUtil.button_a1_2_key.equals(button_key)){//股票分享
+            baseMessage = handleShareEvent(message);
         }
+
         return MessageUtil.baseMessageToXml(baseMessage);
+    }
+
+    /**
+     * 股票分享功能
+     * @param message
+     * @return
+     */
+    private BaseMessage handleShareEvent(BaseRequestMessage message) throws Exception{
+
+        TextMessage textMessage = new TextMessage(message);
+        //查询openId，看是否有此人记录
+        String openId = message.getFromUserName();
+
+        User user = userService.findByOpenId(openId);
+
+        String response = "";
+        //如果用户不存在，则提示用户尚未注册
+        if(user == null || UserUtil.USER_BINGDING_UNREGISTER.equals(user.getIsBinding())){
+            response += "亲,请先完成注册，再进行下一步操作吧..";
+        }else{
+//            String url = Const.server_project_url + "/html/myInfo.html?openId=" + openId;
+            String url = Const.project_loc_localhost + "/html/share.html?openId=" + openId;
+            response += "请点击<a href='"+url+"'>这里</a>，进入详细股票分享页面..";
+        }
+
+        textMessage.setContent(response);
+        return textMessage;
     }
 
     /**

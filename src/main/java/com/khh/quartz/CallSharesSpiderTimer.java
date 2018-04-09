@@ -16,12 +16,12 @@ public class CallSharesSpiderTimer {
 
     @Scheduled(cron = "5 * * ? * *")
     public void callsharesSpider() throws Exception{
-        if(i == 1){
-            System.out.println("开始跑线程啦");
-            Thread thread = new Thread(new SharesThread());
-            thread.start();
-            i++;
-        }
+//        if(i == 1){
+//            System.out.println("开始跑线程啦");
+//            Thread thread = new Thread(new SharesThread());
+//            thread.start();
+//            i++;
+//        }
 
     }
 

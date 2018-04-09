@@ -9,7 +9,7 @@
 
     <!-- 同时开启json格式的支持 -->
 	 <mvc:annotation-driven />
-	<context:component-scan base-package="com.khh.web.controller,com.khh.wechat.controller" />
+	<context:component-scan base-package="com.khh.web.controller,com.khh.wechat.controller,com.khh.websocket.*" />
     <!--
         不配置RequestMappingHandlerMapping会出bug
         而且spring-core的jar包版本必须要4.2.3以上，不然会报错，NoClassDefFoundError: org/springframework/core/MethodIntrospector

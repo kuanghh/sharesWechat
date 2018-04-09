@@ -4,7 +4,7 @@
 
 var localhost_project = "http://localhost/sharesWechat";
 
-var server_ip = "425148e0.ngrok.io";
+var server_ip = "1d4889ba.ngrok.io";
 
 var server_project = "http://" + server_ip + "/sharesWechat";
 
@@ -26,7 +26,19 @@ function js2Json(data){
 }
 
 function strToDate(str){
-    return new Date(parseInt(str) ).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+    // return new Date(parseInt(str) ).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+
+    var date = new Date(parseInt(str));//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D;
+    if(date.getDate().toString().trim().length == 1){
+        D = "0" + date.getDate()+ ' ';
+    }else{
+        D = date.getDate()+ ' ';
+    }
+
+    return Y+M+D;
 }
 /**
  * 刷新当前页面
@@ -46,4 +58,9 @@ function closeThisWindow(){
     window.opener=null;
     window.open('','_self');
     window.close();
+}
+
+function strLongToFloat(num){
+
+    return parseFloat(num)/100;
 }
