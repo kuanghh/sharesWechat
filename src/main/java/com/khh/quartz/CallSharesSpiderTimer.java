@@ -12,16 +12,17 @@ import org.springframework.stereotype.Component;
 @Component("allSharesSpiderTimer")
 public class CallSharesSpiderTimer {
 
-    private static int i = 1;
 
-    @Scheduled(cron = "5 * * ? * *")
+    /**
+     * 每个星期一到五，16：00分执行一次
+     * @throws Exception
+     */
+    @Scheduled(cron = "0 0 16 ? * MON-FRI")
     public void callsharesSpider() throws Exception{
-//        if(i == 1){
-//            System.out.println("开始跑线程啦");
-//            Thread thread = new Thread(new SharesThread());
-//            thread.start();
-//            i++;
-//        }
+
+        System.out.println("开始跑线程啦");
+        Thread thread = new Thread(new SharesThread());
+        thread.start();
 
     }
 
