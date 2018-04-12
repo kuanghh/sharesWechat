@@ -145,7 +145,7 @@ public class SharesUtil {
 
         StringBuilder builder = new StringBuilder(isToday ? "今天":"昨日");
 
-        builder.append("<a href='javascript:void(0);'>")
+        builder.append("<a>")
                 .append(key.getDesc())
                 .append("</a>top").append(list.size()).append("的股票有: \n");
 

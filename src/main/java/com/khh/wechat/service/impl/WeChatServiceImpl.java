@@ -21,13 +21,16 @@ import com.khh.wechat.util.CashUtil;
 import com.khh.wechat.util.MessageUtil;
 import com.khh.wechat.util.WeiXinUtil;
 import com.khh.wechat.vo.message.request.BaseRequestMessage;
+import com.khh.wechat.vo.message.response.Article;
 import com.khh.wechat.vo.message.response.BaseMessage;
+import com.khh.wechat.vo.message.response.NewsMessage;
 import com.khh.wechat.vo.message.response.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -255,24 +258,31 @@ public class WeChatServiceImpl implements WeChatService {
      */
     private BaseMessage handleShareEvent(BaseRequestMessage message) throws Exception{
 
-        TextMessage textMessage = new TextMessage(message);
         //查询openId，看是否有此人记录
         String openId = message.getFromUserName();
 
         User user = userService.findByOpenId(openId);
 
-        String response = "";
+
         //如果用户不存在，则提示用户尚未注册
         if(user == null || UserUtil.USER_BINGDING_UNREGISTER.equals(user.getIsBinding())){
-            response += "亲,请先完成注册，再进行下一步操作吧..";
-        }else{
-//            String url = Const.server_project_url + "/html/myInfo.html?openId=" + openId;
-            String url = Const.project_loc_localhost + "/html/share.html?openId=" + openId;
-            response += "请点击<a href='"+url+"'>这里</a>，进入详细股票分享页面..";
+            TextMessage textMessage = new TextMessage(message);
+            textMessage.setContent("亲,请先完成注册，再进行下一步操作吧..");
+            return textMessage;
         }
 
-        textMessage.setContent(response);
-        return textMessage;
+        String url = Const.project_loc_localhost + "/html/share.html?openId=" + openId;
+        NewsMessage newsMessage = new NewsMessage(message);
+        newsMessage.setArticleCount(1);
+        List<Article> articleList = new ArrayList<>();
+        Article article = new Article();
+        article.setUrl(url);
+        article.setDescripton("分享股票咨询");
+        article.setPicUrl(Const.project_loc_localhost + "/html/images/share.jpg");
+        article.setTitle("分享股票咨询");
+        articleList.add(article);
+        newsMessage.setArticles(articleList);
+        return newsMessage;
     }
 
     /**
@@ -282,24 +292,29 @@ public class WeChatServiceImpl implements WeChatService {
      */
     private BaseMessage handleHistoryDetailEvent(BaseRequestMessage message) throws Exception{
 
-        TextMessage textMessage = new TextMessage(message);
         //查询openId，看是否有此人记录
         String openId = message.getFromUserName();
 
         User user = userService.findByOpenId(openId);
 
-        String response = "";
         //如果用户不存在，则提示用户尚未注册
         if(user == null || UserUtil.USER_BINGDING_UNREGISTER.equals(user.getIsBinding())){
-            response += "亲,请先完成注册，再进行下一步操作吧..";
-        }else{
-//            String url = Const.server_project_url + "/html/myInfo.html?openId=" + openId;
-            String url = Const.project_loc_localhost + "/html/detail.html?openId=" + openId;
-            response += "请点击<a href='"+url+"'>这里</a>，进入详细查询页面..";
+            TextMessage textMessage = new TextMessage(message);
+            textMessage.setContent("亲,请先完成注册，再进行下一步操作吧..");
+            return textMessage;
         }
-
-        textMessage.setContent(response);
-        return textMessage;
+        String url = Const.project_loc_localhost + "/html/detail.html?openId=" + openId;
+        NewsMessage newsMessage = new NewsMessage(message);
+        newsMessage.setArticleCount(1);
+        List<Article> articleList = new ArrayList<>();
+        Article article = new Article();
+        article.setUrl(url);
+        article.setDescripton("历史数据详情查询");
+        article.setPicUrl(Const.project_loc_localhost + "/html/images/search.jpg");
+        article.setTitle("历史数据详情查询");
+        articleList.add(article);
+        newsMessage.setArticles(articleList);
+        return newsMessage;
     }
 
 
@@ -309,23 +324,29 @@ public class WeChatServiceImpl implements WeChatService {
      * @return
      */
     private BaseMessage handleMyInfoEvent(BaseRequestMessage message) throws Exception{
-        TextMessage textMessage = new TextMessage(message);
+
         //查询openId，看是否有此人记录
         String openId = message.getFromUserName();
-
         User user = userService.findByOpenId(openId);
 
-        String response = "";
         //如果用户不存在，则提示用户尚未注册
         if(user == null || UserUtil.USER_BINGDING_UNREGISTER.equals(user.getIsBinding())){
-            response += "亲,请先完成注册，再进行下一步操作吧..";
-        }else{
-//            String url = Const.server_project_url + "/html/myInfo.html?openId=" + openId;
-            String url = Const.project_loc_localhost + "/html/myInfo.html?openId=" + openId;
-            response += "请点击<a href='"+url+"'>这里</a>，查看我的信息吧..";
+            TextMessage textMessage = new TextMessage(message);
+            textMessage.setContent("亲,请先完成注册，再进行下一步操作吧..");
+            return textMessage;
         }
-        textMessage.setContent(response);
-        return textMessage;
+        String url = Const.project_loc_localhost + "/html/myInfo.html?openId=" + openId;
+        NewsMessage newsMessage = new NewsMessage(message);
+        newsMessage.setArticleCount(1);
+        List<Article> articleList = new ArrayList<>();
+        Article article = new Article();
+        article.setUrl(url);
+        article.setDescripton("我的信息");
+        article.setPicUrl(Const.project_loc_localhost + "/html/images/myInfo.jpg");
+        article.setTitle("我的信息");
+        articleList.add(article);
+        newsMessage.setArticles(articleList);
+        return newsMessage;
     }
 
     /**
