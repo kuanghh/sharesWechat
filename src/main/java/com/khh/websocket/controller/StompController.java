@@ -45,7 +45,7 @@ public class StompController extends BaseController{
     public ResponseBean handlerShout2(ShareMessageVO messageVO) throws Exception{
         ResponseBean response = new ResponseBean();
         String openId = messageVO.getOpenId();
-
+        response.setData("userOpenId", openId);
         if(openId == null){
             response.setErrorResponse("无openId信息");
             return response;
